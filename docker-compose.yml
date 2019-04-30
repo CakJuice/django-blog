@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  blog_db:
+    image: postgres:11.2
+  blog_web:
+    build: .
+    command: python manage.py runserver 0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "9000:8000"
+    depends_on:
+      - blog_db
