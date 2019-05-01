@@ -16,6 +16,7 @@ Including another URLconf
 # from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from django.conf import settings
 
 from blog_project.base import views as base_views
 from blog_project.post import views as post_views
@@ -50,3 +51,7 @@ urlpatterns = [
     path('admin/', include('blog_project.blog_admin.urls')),
     path('categories/', post_views.CategoryListView.as_view(), name='category_index'),
 ]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
