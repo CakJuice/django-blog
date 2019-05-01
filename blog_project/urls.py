@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from blog_project.post import views as post_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('categories/', post_views.CategoryListView.as_view(), name='category_index')
 ]
