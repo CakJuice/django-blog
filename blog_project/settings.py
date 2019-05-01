@@ -14,12 +14,11 @@ import os
 
 try:
     import local_settings
-except Exception:
+except ImportError:
     raise Exception("Local settings not found!")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -31,7 +30,6 @@ SECRET_KEY = '^wj9%o9+u@15(gp377o9(bh7g)!rz+x#=3#l=(_$$oz9!xe3(u'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -77,16 +75,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog_project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': local_settings.PG_SETUP
-}
+try:
+    DATABASES = local_settings.DATABASES
+except Exception:
+    print("[WARNING] DATABASE local settings not found! Now using sqlite default database.")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 DB_TABLE_PREFIX = 'djwb_'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -106,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -120,8 +122,32 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'homepage'
+LOGIN_REDIRECT_URL = 'homepage'
+
+INTERNAL_IPS = '127.0.0.1'
+
+# Email settings
+try:
+    EMAIL_HOST = local_settings.EMAIL_HOST
+    EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
+    EMAIL_HOST_USER = local_settings.EMAIL_HOST_USER
+    EMAIL_FROM = local_settings.EMAIL_FROM
+
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_PORT = 465
+    EMAIL_USE_SSL = True
+except ValueError:
+    print("[WARNING] Local settings for email not found, your application may not work properly!")
