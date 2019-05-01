@@ -82,6 +82,8 @@ DATABASES = {
     'default': local_settings.PG_SETUP
 }
 
+DB_TABLE_PREFIX = 'djwb_'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
