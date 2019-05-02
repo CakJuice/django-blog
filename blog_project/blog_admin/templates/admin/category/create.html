@@ -1,0 +1,17 @@
+{% extends 'layouts/admin_layout.html' %}
+
+{% block content %}
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Tambah Kategori Baru</h1>
+  </div>
+
+  <div class="row">
+    <div class="col col-lg-4 col-12">
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        {% include 'includes/form.html' %}
+        <button type="submit" class="btn btn-success btn-block">Submit</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

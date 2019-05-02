@@ -17,13 +17,19 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     name = models.CharField(max_length=60, verbose_name="Name")
+    description = models.CharField(max_length=158, verbose_name="Description", blank=True)
     slug = models.CharField(max_length=64, unique=True, db_index=True, verbose_name="Slug", blank=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='childs',
+                               verbose_name="Parent")
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + 'category'
         ordering = ['name']
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if force_insert and not self.slug:
-            self.slug = slugify(self.title)
+        if force_insert:
+            if not self.description:
+                self.description = self.name
+            if not self.slug:
+                self.slug = slugify(self.title)
         super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
