@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.text import slugify
 from django.utils.crypto import get_random_string
+from django.utils.text import slugify
+
+from blog_project.base.models import Language
 
 
 # Create your models here.
@@ -53,6 +55,7 @@ class Post(BaseModel):
     read = models.IntegerField(verbose_name="Read", default=0)
     state = models.IntegerField(verbose_name="State", default=0)
     publish_date = models.DateTimeField(verbose_name="Publish Date", blank=True, null=True)
+    language = models.ForeignKey(Language, on_delete=models.PROTECT, related_name='posts', verbose_name="Language")
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + 'post'
@@ -61,3 +64,4 @@ class Post(BaseModel):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if force_insert and not self.slug:
             self.slug = '%s-%s' % (slugify(self.title), get_random_string(3))
+        super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
