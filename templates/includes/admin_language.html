@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<form action="{% url 'set_language' %}" method="POST"
+      class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
+  {% csrf_token %}
+  <div class="input-group">
+    <input name="next" type="hidden" value="{{ redirect_to }}"/>
+    <select name="language" class="custom-select">
+      {% get_current_language as LANGUAGE_CODE %}
+      {% get_available_languages as LANGUAGES %}
+      {% for lang in LANGUAGES %}
+      <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %} selected="selected" {% endif %}>
+        {{ lang.1 }} ({{ lang.0 }})
+      </option>
+      {% endfor %}
+    </select>
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+    </div>
+  </div>
+</form>

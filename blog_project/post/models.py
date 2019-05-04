@@ -5,8 +5,6 @@ from django.utils.crypto import get_random_string
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from blog_project.base.models import Language
-
 
 # Create your models here.
 class BaseModel(models.Model):
@@ -46,17 +44,16 @@ class Post(BaseModel):
         (9, 'Archived'),
     )
 
-    title = models.CharField(max_length=120, verbose_name="Title")
-    description = models.CharField(max_length=158, verbose_name="Description")
-    keywords = models.CharField(max_length=255, verbose_name="Keywords")
-    slug = models.CharField(max_length=128, unique=True, db_index=True, verbose_name="Slug", blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts', verbose_name="Category")
-    body = models.TextField(verbose_name="Body")
-    body_preview = models.TextField(verbose_name="Body Preview")
-    read = models.IntegerField(verbose_name="Read", default=0)
-    state = models.IntegerField(verbose_name="State", default=0)
-    publish_date = models.DateTimeField(verbose_name="Publish Date", blank=True, null=True)
-    language = models.ForeignKey(Language, on_delete=models.PROTECT, related_name='posts', verbose_name="Language")
+    title = models.CharField(max_length=120, verbose_name=_("Title"))
+    description = models.CharField(max_length=158, verbose_name=_("Description"))
+    slug = models.CharField(max_length=128, unique=True, db_index=True, verbose_name=_("Slug"), blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts', verbose_name=_("Category"))
+    body = models.TextField(verbose_name=_("Body"))
+    body_preview = models.TextField(verbose_name=_("Body Preview"))
+    read = models.IntegerField(verbose_name=_("Read"), default=0)
+    state = models.IntegerField(verbose_name=_("State"), default=0)
+    publish_date = models.DateTimeField(verbose_name=_("Publish Date"), blank=True, null=True)
+    language = models.CharField(choices=settings.LANGUAGES, verbose_name=_("Language"), default='en-us')
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + 'post'

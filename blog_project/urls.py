@@ -50,6 +50,8 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('admin/', include('blog_project.blog_admin.urls')),
     path('categories/', post_views.CategoryListView.as_view(), name='category_index'),
+
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 
 if settings.DEBUG:

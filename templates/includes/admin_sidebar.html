@@ -1,9 +1,11 @@
+{% load i18n %}
+
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'homepage' %}">
     <div class="sidebar-brand-icon">
       <i class="fas fa-home"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">Beranda</div>
+    <div class="sidebar-brand-text mx-3">{% trans "Homepage" %}</div>
   </a>
 
   <hr class="sidebar-divider my-0">
@@ -11,7 +13,7 @@
   <li class="nav-item active">
     <a class="nav-link" href="{% url 'admin_dashboard' %}">
       <i class="fas fa-fw fa-tachometer-alt"></i>
-      <span>Dashbor</span>
+      <span>{% trans "Dashboard" %}</span>
     </a>
   </li>
 
@@ -25,10 +27,10 @@
     </a>
     <div id="collapsePost" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="#">Semua Pos</a>
-        <a class="collapse-item" href="#">Tambah Baru</a>
-        <a class="collapse-item" href="#">Kategori</a>
-        <a class="collapse-item" href="#">Tag</a>
+        <a class="collapse-item" href="#">{% trans "Posts" %}</a>
+        <a class="collapse-item" href="#">{% trans "New Post" %}</a>
+        <a class="collapse-item" href="#">{% trans "Categories" %}</a>
+        <a class="collapse-item" href="#">{% trans "Tags" %}</a>
       </div>
     </div>
   </li>
@@ -43,8 +45,8 @@
     </a>
     <div id="collapsePages" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="#">Semua Laman</a>
-        <a class="collapse-item" href="#">Tambah Baru</a>
+        <a class="collapse-item" href="#">{% trans "Pages" %}</a>
+        <a class="collapse-item" href="#">{% trans "New Pages" %}</a>
       </div>
     </div>
   </li>

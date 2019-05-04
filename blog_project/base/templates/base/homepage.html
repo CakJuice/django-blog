@@ -1,4 +1,5 @@
 {% extends 'layouts/main_layout.html' %}
+{% load i18n %}
 
 {% block meta_description %}Homepage of django blog{% endblock %}
 {% block meta_keywords %}Blog, Homepage{% endblock %}
@@ -6,6 +7,6 @@
 
 {% block content %}
   <div class="container my-3">
-    <h1>Homepage</h1>
+    <h1>{% trans "Homepage" %}</h1>
   </div>
 {% endblock %}

@@ -1,0 +1,95 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-03 13:17+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: blog_project/base/templates/base/homepage.html:10
+msgid "Homepage"
+msgstr "Beranda"
+
+#: blog_project/blog_admin/templates/admin/dashboard.html:9
+msgid "Dashboard"
+msgstr "Dashbor"
+
+#: blog_project/post/models.py:13
+msgid "Created At"
+msgstr ""
+
+#: blog_project/post/models.py:14
+msgid "Updated At"
+msgstr ""
+
+#: blog_project/post/models.py:16
+msgid "Created By"
+msgstr ""
+
+#: blog_project/post/models.py:23
+msgid "Name"
+msgstr ""
+
+#: blog_project/post/models.py:24 blog_project/post/models.py:50
+msgid "Description"
+msgstr ""
+
+#: blog_project/post/models.py:25 blog_project/post/models.py:51
+msgid "Slug"
+msgstr ""
+
+#: blog_project/post/models.py:27
+msgid "Parent Category"
+msgstr ""
+
+#: blog_project/post/models.py:49
+msgid "Title"
+msgstr ""
+
+#: blog_project/post/models.py:52
+msgid "Category"
+msgstr ""
+
+#: blog_project/post/models.py:53
+msgid "Body"
+msgstr ""
+
+#: blog_project/post/models.py:54
+msgid "Body Preview"
+msgstr ""
+
+#: blog_project/post/models.py:55
+msgid "Read"
+msgstr ""
+
+#: blog_project/post/models.py:56
+msgid "State"
+msgstr ""
+
+#: blog_project/post/models.py:57
+msgid "Publish Date"
+msgstr ""
+
+#: blog_project/post/models.py:58
+msgid "Language"
+msgstr ""
+
+#: blog_project/settings.py:118
+msgid "English"
+msgstr ""
+
+#: blog_project/settings.py:119
+msgid "Indonesian"
+msgstr ""

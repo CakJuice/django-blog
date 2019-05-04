@@ -16,6 +16,15 @@ def dashboard(request):
     return render(request, 'admin/dashboard.html')
 
 
+@login_required
+def category_index(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
+    return render(request, 'admin/category/index.html', context=context)
+
+
 class CategoryCreateView(UserCreatorMixin, CreateView):
     model = Category
     template_name = 'admin/category/create.html'
