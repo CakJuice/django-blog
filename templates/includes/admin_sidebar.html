@@ -23,13 +23,13 @@
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePost" aria-expanded="true"
        aria-controls="collapsePost">
       <i class="fas fa-fw fa-thumbtack rotate-15"></i>
-      <span>Pos</span>
+      <span>{% trans "Posts" %}</span>
     </a>
     <div id="collapsePost" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="#">{% trans "Posts" %}</a>
+        <a class="collapse-item" href="#">{% trans "All Posts" %}</a>
         <a class="collapse-item" href="#">{% trans "New Post" %}</a>
-        <a class="collapse-item" href="#">{% trans "Categories" %}</a>
+        <a class="collapse-item" href="{% url 'admin_category_index' %}">{% trans "Categories" %}</a>
         <a class="collapse-item" href="#">{% trans "Tags" %}</a>
       </div>
     </div>
@@ -41,11 +41,11 @@
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
        aria-controls="collapsePages">
       <i class="fas fa-fw fa-copy"></i>
-      <span>Laman</span>
+      <span>{% trans "Pages" %}</span>
     </a>
     <div id="collapsePages" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="#">{% trans "Pages" %}</a>
+        <a class="collapse-item" href="#">{% trans "All Pages" %}</a>
         <a class="collapse-item" href="#">{% trans "New Pages" %}</a>
       </div>
     </div>

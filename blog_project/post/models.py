@@ -23,16 +23,20 @@ class Category(BaseModel):
     slug = models.CharField(max_length=64, unique=True, db_index=True, verbose_name=_("Slug"), blank=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='childs',
                                verbose_name=_("Parent Category"))
+    language = models.CharField(max_length=6, choices=settings.LANGUAGES, verbose_name=_("Language"), default='en-us')
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + 'category'
         ordering = ['name']
 
+    def __str__(self):
+        return self.name
+
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if force_insert:
-            if not self.description:
+            if not self.description or self.description == '':
                 self.description = self.name
-            if not self.slug:
+            if not self.slug or self.slug == '':
                 self.slug = slugify(self.title)
         super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
@@ -53,13 +57,16 @@ class Post(BaseModel):
     read = models.IntegerField(verbose_name=_("Read"), default=0)
     state = models.IntegerField(verbose_name=_("State"), default=0)
     publish_date = models.DateTimeField(verbose_name=_("Publish Date"), blank=True, null=True)
-    language = models.CharField(choices=settings.LANGUAGES, verbose_name=_("Language"), default='en-us')
+    language = models.CharField(max_length=6, choices=settings.LANGUAGES, verbose_name=_("Language"), default='en-us')
 
     class Meta:
         db_table = settings.DB_TABLE_PREFIX + 'post'
         ordering = ['-publish_date']
 
+    def __str__(self):
+        return self.title[:30]
+
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if force_insert and not self.slug:
+        if force_insert and (not self.slug or self.slug == ''):
             self.slug = '%s-%s' % (slugify(self.title), get_random_string(3))
         super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
