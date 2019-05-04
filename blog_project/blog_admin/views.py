@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.views.decorators.http import require_POST
 
 from blog_project.post.models import Category
@@ -66,4 +66,14 @@ def category_update(request, pk):
     form = forms.CategoryForm(request.POST, instance=category)
     if form.is_valid():
         form.save()
+    return redirect('admin_category_index')
+
+
+@login_required
+def category_delete(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    if category.posts.count() > 0:
+        pass
+    else:
+        category.delete()
     return redirect('admin_category_index')
