@@ -1,4 +1,4 @@
-<form action="{{ form_action }}" method="POST" novalidate>
+<form action="{{ form_action }}" method="POST" onsubmit="submitFormAjax(this); return false;A" novalidate>
   {% csrf_token %}
   {% include 'includes/form.html' %}
     <button type="submit" class="btn btn-success btn-block">Submit</button>

@@ -55,7 +55,6 @@ def category_create(request):
     else:
         if request.is_ajax():
             return JsonResponse(form.errors)
-
     return redirect('admin_category_index')
 
 
@@ -66,6 +65,14 @@ def category_update(request, pk):
     form = forms.CategoryForm(request.POST, instance=category)
     if form.is_valid():
         form.save()
+        if request.is_ajax():
+            return JsonResponse({
+                'success': True,
+                'redirect': reverse('admin_category_index')
+            })
+    else:
+        if request.is_ajax():
+            return JsonResponse(form.errors)
     return redirect('admin_category_index')
 
 

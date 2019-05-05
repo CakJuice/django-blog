@@ -4,6 +4,10 @@
 {% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
 {% block title %}Dashboard{% endblock %}
 
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+{% endblock %}
+
 {% block content %}
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">{% trans "Category" %}</h1>
@@ -104,22 +108,24 @@
   </div>
 {% endblock %}
 
-{% block extra_script %}
-<script>
-  $(document).ready(function() {
-    $('#tableCategories').DataTable({
-      columns: [
-        null,
-        null,
-        null,
-        null,
-        { orderable: false, searchable: false },
-      ]
-    });
+{% block extra_body %}
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+  <script src="{% static 'js/form_ajax.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+      $('#tableCategories').DataTable({
+        columns: [
+          null,
+          null,
+          null,
+          null,
+          { orderable: false, searchable: false },
+        ]
+      });
 
-    $('.delete-category').click(function() {
-      $('#deleteCategoryModal #btnConfirmDelete').attr('href', this.href);
+      $('.delete-category').click(function() {
+        $('#deleteCategoryModal #btnConfirmDelete').attr('href', this.href);
+      });
     });
-  });
-</script>
+  </script>
 {% endblock %}
