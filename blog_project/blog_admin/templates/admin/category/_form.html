@@ -1,5 +1,7 @@
-<form action="{{ form_action }}" method="POST" onsubmit="submitFormAjax(this); return false;A" novalidate>
+{% load i18n %}
+
+<form action="{{ form_action }}" method="POST" onsubmit="submitFormAjax(this); return false;" novalidate>
   {% csrf_token %}
   {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-success btn-block">Submit</button>
+  <button type="submit" class="btn btn-success btn-block">{% trans "Submit" %}</button>
 </form>

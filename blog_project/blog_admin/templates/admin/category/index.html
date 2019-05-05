@@ -109,9 +109,8 @@
 {% endblock %}
 
 {% block extra_body %}
-  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
-  <script src="{% static 'js/form_ajax.js' %}"></script>
-  <script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script>
     $(document).ready(function() {
       $('#tableCategories').DataTable({
         columns: [
@@ -125,6 +124,13 @@
 
       $('.delete-category').click(function() {
         $('#deleteCategoryModal #btnConfirmDelete').attr('href', this.href);
+      });
+
+      $('#id_name').focusout(function() {
+        if ($('#id_slug').val().trim() == '') {
+          var slug = $(this).val().slugify();
+          $('#id_slug').val(slug);
+        }
       });
     });
   </script>

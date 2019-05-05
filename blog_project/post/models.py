@@ -32,13 +32,12 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if force_insert:
-            if not self.description or self.description == '':
-                self.description = self.name
-            if not self.slug or self.slug == '':
-                self.slug = slugify(self.title)
-        super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+    def save(self, *args, **kwargs):
+        if not self.description or self.description == '':
+            self.description = self.name
+        if not self.slug or self.slug == '':
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class Post(BaseModel):
@@ -64,9 +63,11 @@ class Post(BaseModel):
         ordering = ['-publish_date']
 
     def __str__(self):
-        return self.title[:30]
+        if len(self.title) > 30:
+            return '%s...' % self.title[:30]
+        return self.title
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if force_insert and (not self.slug or self.slug == ''):
+    def save(self, *args, **kwargs):
+        if not self.slug or self.slug == '':
             self.slug = '%s-%s' % (slugify(self.title), get_random_string(3))
-        super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+        super().save(*args, **kwargs)
