@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'debug_toolbar',
     'blog_project.base',
     'blog_project.post',
     'blog_project.blog_admin',
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_project.urls'
@@ -149,6 +151,10 @@ LOGOUT_REDIRECT_URL = 'homepage'
 LOGIN_REDIRECT_URL = 'homepage'
 
 INTERNAL_IPS = '127.0.0.1'
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+}
 
 # Email settings
 try:
