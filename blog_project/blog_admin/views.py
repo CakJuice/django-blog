@@ -1,6 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 
 from blog_project.post.models import Category
@@ -48,6 +50,7 @@ def category_create(request):
         category.created_by = request.user
         category.save()
         if request.is_ajax():
+            messages.success(request, _("Successfully created a new category."))
             return JsonResponse({
                 'success': True,
                 'redirect': reverse('admin_category_index')
@@ -55,6 +58,8 @@ def category_create(request):
     else:
         if request.is_ajax():
             return JsonResponse(form.errors)
+        messages.warning(request,
+                         _("There is a problem when you create a new category! Please contact an administrator!"))
     return redirect('admin_category_index')
 
 
@@ -66,6 +71,7 @@ def category_update(request, pk):
     if form.is_valid():
         form.save()
         if request.is_ajax():
+            messages.success(request, _("Category has been updated."))
             return JsonResponse({
                 'success': True,
                 'redirect': reverse('admin_category_index')
@@ -73,6 +79,7 @@ def category_update(request, pk):
     else:
         if request.is_ajax():
             return JsonResponse(form.errors)
+        messages.warning(request, _("There is a problem when you update a category! Please contact an administrator!"))
     return redirect('admin_category_index')
 
 
@@ -80,7 +87,8 @@ def category_update(request, pk):
 def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if category.posts.count() > 0:
-        pass
+        messages.warning(request, _("You cannot delete a category that has a post."))
     else:
         category.delete()
+        messages.success(request, _("Successfully deleted a new category."))
     return redirect('admin_category_index')
