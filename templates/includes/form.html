@@ -18,6 +18,8 @@
         {% render_field field class=field|input_class %}
         <label class="custom-file-label" for="{{ field.auto_id }}">Choose file</label>
       </div>
+    {% elif field.name == 'body' %}
+      {{ field|safe }}
     {% else %}
       {% render_field field class=field|input_class %}
     {% endif %}

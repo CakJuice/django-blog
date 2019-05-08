@@ -92,3 +92,15 @@ def category_delete(request, pk):
         category.delete()
         messages.success(request, _("Successfully deleted a new category."))
     return redirect('admin_category_index')
+
+
+@login_required
+def post_create(request):
+    if request.method == 'POST':
+        form = forms.PostForm(request.POST)
+    else:
+        form = forms.PostForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'admin/post/create.html', context=context)

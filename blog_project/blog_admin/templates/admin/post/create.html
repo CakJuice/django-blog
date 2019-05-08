@@ -1,0 +1,34 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load i18n %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "New Post" %}{% endblock %}
+
+{% block extra_head %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  <h1>This is content</h1>
+  <form method="POST" novalidate>
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-success btn-block">{% trans "Submit" %}</button>
+  </form>
+{% endblock %}
+
+{% block extra_body %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#id_body').summernote();
+
+      $br = document.createElement('br');
+      var noteFormLabel = document.getElementsByClassName('note-form-label');
+      for (var i;i<noteFormLabel.length;i++) {
+        var $label = noteFromLabel[i];
+        $label.parentNode.insertBefore($br, $label.nextSibling);
+      }
+    });
+  </script>
+{% endblock %}

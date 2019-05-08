@@ -52,6 +52,7 @@ urlpatterns = [
     path('categories/', post_views.CategoryListView.as_view(), name='category_index'),
 
     path('i18n/', include('django.conf.urls.i18n')),
+    # path('summernote/', include('django_summernote.urls')),
 ]
 
 if settings.DEBUG:
