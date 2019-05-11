@@ -5,7 +5,7 @@
 {% block title %}{% trans "New Post" %}{% endblock %}
 
 {% block extra_head %}
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -18,16 +18,27 @@
 {% endblock %}
 
 {% block extra_body %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-      $('#id_body').summernote();
+    var quill = new Quill('#body_quill', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+          ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+          ['blockquote', 'code-block'],
 
-      $br = document.createElement('br');
-      var noteFormLabel = document.getElementsByClassName('note-form-label');
-      for (var i;i<noteFormLabel.length;i++) {
-        var $label = noteFromLabel[i];
-        $label.parentNode.insertBefore($br, $label.nextSibling);
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+          [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+          ['link', 'image'],
+
+          [{ 'color': [] }],                                // dropdown with defaults from theme
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+
+          ['clean']                                         // remove formatting button
+        ],
       }
     });
   </script>

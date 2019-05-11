@@ -3,4 +3,3 @@ psycopg2==2.8.2
 psycopg2-binary==2.8.2
 django-widget-tweaks==1.4.3
 django-debug-toolbar==1.11
-django-summernote==0.8.11.4
