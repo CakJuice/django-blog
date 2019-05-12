@@ -1,11 +1,12 @@
 {% extends 'layouts/admin_layout.html' %}
+{% load static %}
 {% load i18n %}
 
 {% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
 {% block title %}{% trans "New Post" %}{% endblock %}
 
 {% block extra_head %}
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -18,28 +19,22 @@
 {% endblock %}
 
 {% block extra_body %}
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+  <script src="{% static 'js/summernote-ext-highlight.js' %}"></script>
   <script type="text/javascript">
-    var quill = new Quill('#body_quill', {
-      theme: 'snow',
-      modules: {
+    $(function() {
+      $('#id_body').summernote({
         toolbar: [
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-          ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-          ['blockquote', 'code-block'],
-
-          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-          [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-          [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-          ['link', 'image'],
-
-          [{ 'color': [] }],                                // dropdown with defaults from theme
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-
-          ['clean']                                         // remove formatting button
-        ],
-      }
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['font', ['strikethrough', 'superscript', 'subscript']],
+          ['fontstyle', ['fontname', 'fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']],
+          ['highlight', ['highlight']],
+          ['misc', ['codeview']]
+        ]
+      });
     });
   </script>
 {% endblock %}
