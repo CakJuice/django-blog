@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load widget_tweaks %}
 {% load form_tags %}
 
@@ -16,7 +17,7 @@
     {% if field.field.widget.input_type == 'file' %}
       <div class="custom-file">
         {% render_field field class=field|input_class %}
-        <label class="custom-file-label" for="{{ field.auto_id }}">Choose file</label>
+        <label class="custom-file-label" for="{{ field.auto_id }}">{% trans "Choose file" %}</label>
       </div>
     {% elif field.name == 'body' %}
       {{ field|safe }}

@@ -16,7 +16,7 @@
         <div class="form-group">
           <div class="custom-file">
             {% render_field form.image class=form.image|input_class %}
-            <label class="custom-file-label" for="{{ form.image.auto_id }}">Choose file</label>
+            <label class="custom-file-label" for="{{ form.image.auto_id }}">{% trans "Choose file" %}</label>
           </div>
 
           {% if form.is_bound %}

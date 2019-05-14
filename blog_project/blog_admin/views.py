@@ -4,9 +4,13 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
 
 from blog_project.post.models import Category
 from . import forms
+
+from blog_project.blog_media.models import ImageMedia
+from blog_project.tools import range_pagination
 
 
 # Create your views here.
@@ -109,8 +113,29 @@ def image_media_create(request):
     if request.method == 'POST':
         form = forms.ImageMediaCreateForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            media = form.save(commit=False)
+            media.created_by = request.user
+            media.save()
+            messages.success(request, _("Successfully upload a new media."))
+            return redirect('image_media_index')
     else:
         form = forms.ImageMediaCreateForm()
     context = {'form': form}
     return render(request, 'admin/image_media/create.html', context=context)
+
+
+@login_required
+def image_media_index(request):
+    image_list = ImageMedia.objects.all()
+    paginator = Paginator(image_list, 10)
+    page = request.GET.get('page', '1')
+    images = paginator.get_page(page)
+
+    num_pages = images.paginator.num_pages
+    pagination = range_pagination(int(page), num_pages, limit=10)
+
+    context = {
+        'images': images,
+        'pagination': pagination,
+    }
+    return render(request, 'admin/image_media/index.html', context=context)

@@ -3,6 +3,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -21,6 +22,8 @@ class ImageMedia(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Name"))
     alt = models.CharField(max_length=100, verbose_name=_("Alt"), blank=True, null=True)
     description = models.CharField(max_length=158, verbose_name=_("Description"), blank=True, null=True)
+    created_by = models.ForeignKey(User, related_name='+', on_delete=models.SET_NULL, verbose_name=_("Created By"),
+                                   blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
 
     class Meta:

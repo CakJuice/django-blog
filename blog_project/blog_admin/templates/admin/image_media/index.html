@@ -1,0 +1,46 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load i18n %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "Image Media" %}{% endblock %}
+
+{% block content %}
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">{% trans "Image Media" %}</h1>
+    {% if is_update %}
+      <a href="{% url 'admin_category_index' %}" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
+        <i class="fas fa-plus-square text-white-50"></i> {% trans "New Category" %}
+      </a>
+    {% endif %}
+  </div>
+
+  {% include 'includes/alert.html' %}
+
+  <table class="table table-bordered" style="width: 100%">
+    <thead>
+      <tr>
+        <th colspan="2" style="width: 50%">Media</th>
+        <th style="width: 25%">{% trans "Created By" %}</th>
+        <th style="width: 25%">{% trans "Created At" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for image in images %}
+        <tr>
+          <td style="width: 10%; border-right: none">
+                <img src="{{ image.image.url }}" class="img-fluid">
+          </td>
+          <td style="border-left: none">{{ image.name }}</td>
+          <td>{{ image.created_by }}</td>
+          <td>{{ image.created_at }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">{% trans "There are no images for this time." %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% include 'includes/pagination.html' with objects=images pagination=pagination only %}
+{% endblock %}
