@@ -7,11 +7,9 @@
 {% block content %}
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">{% trans "File Media" %}</h1>
-    {% if is_update %}
-      <a href="{% url 'admin_category_index' %}" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
-        <i class="fas fa-plus-square text-white-50"></i> {% trans "New Category" %}
-      </a>
-    {% endif %}
+    <a href="{% url 'admin_file_media_create' %}" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
+      <i class="fas fa-plus-square text-white-50"></i> {% trans "Add File Media" %}
+    </a>
   </div>
 
   {% include 'includes/alert.html' %}

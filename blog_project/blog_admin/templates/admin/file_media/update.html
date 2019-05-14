@@ -1,0 +1,22 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "Update File Media" %}{% endblock %}
+
+{% block content %}
+  <h1 class="h3 mb-0 text-gray-800">{% trans "Update File Media" %}</h1>
+  <div class="row my-3">
+    <div class="col col-lg-4 col-12">
+      <img src="{{ file.media.url }}" class="img-fluid">
+    </div>
+  </div>
+  <div class="col col-lg-4 col-12">
+    <form action="{% url 'admin_file_media_update' pk=file.pk %}" method="POST" novalidate>
+      {% csrf_token %}
+      {% include 'includes/form.html' %}
+      <button type="submit" class="btn btn-success">{% trans "Update" %}</button>
+    </form>
+  </div>
+{% endblock %}

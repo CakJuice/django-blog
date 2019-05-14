@@ -20,3 +20,9 @@ class FileMediaCreateForm(ModelForm):
     class Meta:
         model = FileMedia
         fields = ['name', 'media']
+
+
+class FileMediaUpdateForm(ModelForm):
+    class Meta:
+        model = FileMedia
+        fields = ['name', 'alt', 'description']

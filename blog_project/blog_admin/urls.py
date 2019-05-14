@@ -13,6 +13,7 @@ urlpatterns = [
 
     path('post/create/', views.post_create, name='admin_post_create'),
 
-    path('media/', views.file_media_index, name='file_media_index'),
-    path('media/create/', views.file_media_create, name='file_media_create'),
+    path('media/', views.file_media_index, name='admin_file_media_index'),
+    path('media/create/', views.file_media_create, name='admin_file_media_create'),
+    path('media/<int:pk>/update/', views.file_media_update, name='admin_file_media_update'),
 ]

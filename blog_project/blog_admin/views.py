@@ -117,7 +117,7 @@ def file_media_create(request):
             media.created_by = request.user
             media.save()
             messages.success(request, _("Successfully upload a new media."))
-            return redirect('file_media_index')
+            return redirect('admin_file_media_index')
     else:
         form = forms.FileMediaCreateForm()
     context = {'form': form}
@@ -139,3 +139,21 @@ def file_media_index(request):
         'pagination': pagination,
     }
     return render(request, 'admin/file_media/index.html', context=context)
+
+
+@login_required
+def file_media_update(request, pk):
+    file = get_object_or_404(FileMedia, pk=pk)
+    if request.method == 'POST':
+        form = forms.FileMediaUpdateForm(request.POST, instance=file)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Successfully update your media."))
+            return redirect('admin_file_media_index')
+    else:
+        form = forms.FileMediaUpdateForm(instance=file)
+    context = {
+        'file': file,
+        'form': form,
+    }
+    return render(request, 'admin/file_media/update.html', context=context)

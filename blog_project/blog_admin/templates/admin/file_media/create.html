@@ -8,9 +8,10 @@
 {% block title %}{% trans "Add File Media" %}{% endblock %}
 
 {% block content %}
+  <h1 class="h3 mb-0 text-gray-800">{% trans "Add File Media" %}</h1>
   <div class="row">
     <div class="col col-lg-4 col-12">
-      <form action="{% url 'file_media_create' %}" method="POST" enctype="multipart/form-data" novalidate>
+      <form action="{% url 'admin_file_media_create' %}" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {% render_field form.name class="d-none" %}
         <div class="form-group">
