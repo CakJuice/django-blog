@@ -109,3 +109,6 @@ venv.bak/
 
 # Database
 postgres-data/
+
+# upload media
+media/

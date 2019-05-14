@@ -18,7 +18,7 @@ def upload_image_media(instance, filename):
 # Create your models here.
 class ImageMedia(models.Model):
     image = models.ImageField(upload_to=upload_image_media, verbose_name=_("Image"))
-    name = models.ImageField(max_length=100, verbose_name=_("Name"))
+    name = models.CharField(max_length=100, verbose_name=_("Name"))
     alt = models.CharField(max_length=100, verbose_name=_("Alt"), blank=True, null=True)
     description = models.CharField(max_length=158, verbose_name=_("Description"), blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))

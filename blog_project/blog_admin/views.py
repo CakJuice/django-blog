@@ -100,7 +100,17 @@ def post_create(request):
         form = forms.PostForm(request.POST)
     else:
         form = forms.PostForm()
-    context = {
-        'form': form
-    }
+    context = {'form': form}
     return render(request, 'admin/post/create.html', context=context)
+
+
+@login_required
+def image_media_create(request):
+    if request.method == 'POST':
+        form = forms.ImageMediaCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form = forms.ImageMediaCreateForm()
+    context = {'form': form}
+    return render(request, 'admin/image_media/create.html', context=context)

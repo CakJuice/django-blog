@@ -1,0 +1,65 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load form_tags %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "Add Image Media" %}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col col-lg-4 col-12">
+      <form action="{% url 'image_media_create' %}" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {% render_field form.name class="d-none" %}
+        <div class="form-group">
+          <div class="custom-file">
+            {% render_field form.image class=form.image|input_class %}
+            <label class="custom-file-label" for="{{ form.image.auto_id }}">Choose file</label>
+          </div>
+
+          {% if form.is_bound %}
+            {% if form.image.errors %}
+              {% for error in form.image.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endif %}
+
+          {% if form.image.help_text %}
+            <small class="form-text text-muted">
+              {{ form.image.help_text|safe }}
+            </small>
+          {% endif %}
+          </div>
+        <button type="submit" class="btn btn-success">Upload Image</button>
+      </form>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col col-lg-4 col-12" id="img-container"></div>
+  </div>
+{% endblock %}
+
+{% block extra_body %}
+  <script>
+    var $file = document.getElementById('id_image');
+    var $imgCont = document.getElementById('img-container');
+    var $name = document.getElementById('id_name');
+    $file.addEventListener('change', function() {
+      $name.value = this.files[0].name;
+
+      var reader = new FileReader();
+      reader.addEventListener('load', function() {
+        $imgCont.innerHTML = '<img src="' + reader.result + '" class="img-fluid">';
+      }, false);
+
+      if (this.files[0]) {
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+  </script>
+{% endblock %}

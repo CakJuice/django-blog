@@ -12,4 +12,6 @@ urlpatterns = [
     path('category/<int:pk>/delete/', views.category_delete, name='admin_category_delete'),
 
     path('post/create/', views.post_create, name='admin_post_create'),
+
+    path('image-media/create/', views.image_media_create, name='image_media_create'),
 ]
