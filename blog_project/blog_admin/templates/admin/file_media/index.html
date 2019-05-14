@@ -2,11 +2,11 @@
 {% load i18n %}
 
 {% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
-{% block title %}{% trans "Image Media" %}{% endblock %}
+{% block title %}{% trans "File Media" %}{% endblock %}
 
 {% block content %}
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">{% trans "Image Media" %}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{% trans "File Media" %}</h1>
     {% if is_update %}
       <a href="{% url 'admin_category_index' %}" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
         <i class="fas fa-plus-square text-white-50"></i> {% trans "New Category" %}
@@ -25,22 +25,22 @@
       </tr>
     </thead>
     <tbody>
-      {% for image in images %}
+      {% for file in files %}
         <tr>
           <td style="width: 10%; border-right: none">
-                <img src="{{ image.image.url }}" class="img-fluid">
+                <img src="{{ file.media.url }}" class="img-fluid">
           </td>
-          <td style="border-left: none">{{ image.name }}</td>
-          <td>{{ image.created_by }}</td>
-          <td>{{ image.created_at }}</td>
+          <td style="border-left: none">{{ file.name }}</td>
+          <td>{{ file.created_by }}</td>
+          <td>{{ file.created_at }}</td>
         </tr>
       {% empty %}
         <tr>
-          <td colspan="3">{% trans "There are no images for this time." %}</td>
+          <td colspan="4">{% trans "There are no files for this time." %}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  {% include 'includes/pagination.html' with objects=images pagination=pagination only %}
+  {% include 'includes/pagination.html' with objects=files pagination=pagination only %}
 {% endblock %}

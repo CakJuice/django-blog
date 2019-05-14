@@ -8,7 +8,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-def upload_image_media(instance, filename):
+def upload_file_media(instance, filename):
     now = datetime.now()
     path = '%d/%d' % (now.year, now.month)
     ext = filename.split('.')[-1]
@@ -17,8 +17,8 @@ def upload_image_media(instance, filename):
 
 
 # Create your models here.
-class ImageMedia(models.Model):
-    image = models.ImageField(upload_to=upload_image_media, verbose_name=_("Image"))
+class FileMedia(models.Model):
+    media = models.FileField(upload_to=upload_file_media, verbose_name=_("Media"))
     name = models.CharField(max_length=100, verbose_name=_("Name"))
     alt = models.CharField(max_length=100, verbose_name=_("Alt"), blank=True, null=True)
     description = models.CharField(max_length=158, verbose_name=_("Description"), blank=True, null=True)
@@ -27,7 +27,7 @@ class ImageMedia(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
 
     class Meta:
-        db_table = settings.DB_TABLE_PREFIX + 'image_media'
+        db_table = settings.DB_TABLE_PREFIX + 'file_media'
         ordering = ['-created_at']
 
     def __str__(self):

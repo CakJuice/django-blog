@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from blog_project.post.models import Category
 from . import forms
 
-from blog_project.blog_media.models import ImageMedia
+from blog_project.file_media.models import FileMedia
 from blog_project.tools import range_pagination
 
 
@@ -109,33 +109,33 @@ def post_create(request):
 
 
 @login_required
-def image_media_create(request):
+def file_media_create(request):
     if request.method == 'POST':
-        form = forms.ImageMediaCreateForm(request.POST, request.FILES)
+        form = forms.FileMediaCreateForm(request.POST, request.FILES)
         if form.is_valid():
             media = form.save(commit=False)
             media.created_by = request.user
             media.save()
             messages.success(request, _("Successfully upload a new media."))
-            return redirect('image_media_index')
+            return redirect('file_media_index')
     else:
-        form = forms.ImageMediaCreateForm()
+        form = forms.FileMediaCreateForm()
     context = {'form': form}
-    return render(request, 'admin/image_media/create.html', context=context)
+    return render(request, 'admin/file_media/create.html', context=context)
 
 
 @login_required
-def image_media_index(request):
-    image_list = ImageMedia.objects.all()
-    paginator = Paginator(image_list, 10)
+def file_media_index(request):
+    file_list = FileMedia.objects.all()
+    paginator = Paginator(file_list, 10)
     page = request.GET.get('page', '1')
-    images = paginator.get_page(page)
+    files = paginator.get_page(page)
 
-    num_pages = images.paginator.num_pages
+    num_pages = files.paginator.num_pages
     pagination = range_pagination(int(page), num_pages, limit=10)
 
     context = {
-        'images': images,
+        'files': files,
         'pagination': pagination,
     }
-    return render(request, 'admin/image_media/index.html', context=context)
+    return render(request, 'admin/file_media/index.html', context=context)

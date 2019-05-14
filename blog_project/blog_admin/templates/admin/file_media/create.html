@@ -5,23 +5,23 @@
 {% load form_tags %}
 
 {% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
-{% block title %}{% trans "Add Image Media" %}{% endblock %}
+{% block title %}{% trans "Add File Media" %}{% endblock %}
 
 {% block content %}
   <div class="row">
     <div class="col col-lg-4 col-12">
-      <form action="{% url 'image_media_create' %}" method="POST" enctype="multipart/form-data" novalidate>
+      <form action="{% url 'file_media_create' %}" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {% render_field form.name class="d-none" %}
         <div class="form-group">
           <div class="custom-file">
-            {% render_field form.image class=form.image|input_class %}
-            <label class="custom-file-label" for="{{ form.image.auto_id }}">{% trans "Choose file" %}</label>
+            {% render_field form.media class=form.media|input_class %}
+            <label class="custom-file-label" for="{{ form.media.auto_id }}">{% trans "Choose file" %}</label>
           </div>
 
           {% if form.is_bound %}
-            {% if form.image.errors %}
-              {% for error in form.image.errors %}
+            {% if form.media.errors %}
+              {% for error in form.media.errors %}
                 <div class="invalid-feedback">
                   {{ error }}
                 </div>
@@ -29,13 +29,13 @@
             {% endif %}
           {% endif %}
 
-          {% if form.image.help_text %}
+          {% if form.media.help_text %}
             <small class="form-text text-muted">
-              {{ form.image.help_text|safe }}
+              {{ form.media.help_text|safe }}
             </small>
           {% endif %}
           </div>
-        <button type="submit" class="btn btn-success">Upload Image</button>
+        <button type="submit" class="btn btn-success">Upload File</button>
       </form>
     </div>
   </div>
@@ -46,7 +46,7 @@
 
 {% block extra_body %}
   <script>
-    var $file = document.getElementById('id_image');
+    var $file = document.getElementById('id_media');
     var $imgCont = document.getElementById('img-container');
     var $name = document.getElementById('id_name');
     $file.addEventListener('change', function() {

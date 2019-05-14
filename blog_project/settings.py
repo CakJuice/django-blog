@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'debug_toolbar',
-    'blog_project.blog_media',
+    'blog_project.file_media',
     'blog_project.base',
     'blog_project.post',
     'blog_project.blog_admin',
