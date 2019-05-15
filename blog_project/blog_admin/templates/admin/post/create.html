@@ -37,4 +37,12 @@
       });
     });
   </script>
+  <script>
+    function testInsertSummernote() {
+      $('#id_body').summernote('editor.saveRange');
+      $('#id_body').summernote('editor.restoreRange');
+      $('#id_body').summernote('editor.focus');
+      $('#id_body').summernote('editor.pasteHTML', '<p>This is added text.</p>');
+    }
+  </script>
 {% endblock %}
