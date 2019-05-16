@@ -18,11 +18,11 @@ def upload_file_media(instance, filename):
 
 # Create your models here.
 class FileMedia(models.Model):
-    media = models.FileField(upload_to=upload_file_media, verbose_name=_("Media"))
+    media = models.ImageField(upload_to=upload_file_media, verbose_name=_("Media"))
     name = models.CharField(max_length=100, verbose_name=_("Name"))
     alt = models.CharField(max_length=100, verbose_name=_("Alt"), blank=True, null=True)
     description = models.CharField(max_length=158, verbose_name=_("Description"), blank=True, null=True)
-    created_by = models.ForeignKey(User, related_name='+', on_delete=models.SET_NULL, verbose_name=_("Created By"),
+    created_by = models.ForeignKey(User, related_name='medias', on_delete=models.SET_NULL, verbose_name=_("Created By"),
                                    blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
 
