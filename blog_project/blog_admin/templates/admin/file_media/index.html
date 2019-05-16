@@ -1,5 +1,6 @@
 {% extends 'layouts/admin_layout.html' %}
 {% load i18n %}
+{% load thumbnail %}
 
 {% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
 {% block title %}{% trans "File Media" %}{% endblock %}
@@ -28,7 +29,9 @@
       {% for file in files %}
         <tr>
           <td style="width: 10%; border-right: none">
-                <img src="{{ file.media.url }}" class="img-fluid">
+            {% thumbnail file.media "100x100" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+            {% endthumbnail %}
           </td>
           <td style="border-left: none">
             {{ file.name }}<br>
