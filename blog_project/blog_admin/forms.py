@@ -13,7 +13,7 @@ class CategoryForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'description', 'slug', 'category', 'body', 'body_preview', 'language']
+        fields = ['title', 'body', 'description', 'slug', 'category', 'language']
 
 
 class FileMediaCreateForm(ModelForm):

@@ -1,0 +1,34 @@
+{% load i18n %}
+{% load widget_tweaks %}
+{% load form_tags %}
+
+<div class="form-group">
+  {{ field.label_tag }}
+
+  {% if field.field.widget.input_type == 'file' %}
+    <div class="custom-file">
+      {% render_field field class=field|input_class %}
+      <label class="custom-file-label" for="{{ field.auto_id }}">{% trans "Choose file" %}</label>
+    </div>
+  {% elif field.name == 'body' %}
+    {{ field|safe }}
+  {% else %}
+    {% render_field field class=field|input_class %}
+  {% endif %}
+
+  {% if form.is_bound %}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">
+          {{ error }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+
+  {% if field.help_text %}
+    <small class="form-text text-muted">
+      {{ field.help_text|safe }}
+    </small>
+  {% endif %}
+</div>

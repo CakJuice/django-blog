@@ -1,6 +1,8 @@
 {% extends 'layouts/admin_layout.html' %}
 {% load static %}
 {% load i18n %}
+{% load widget_tweaks %}
+{% load form_tags %}
 
 {% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
 {% block title %}{% trans "New Post" %}{% endblock %}
@@ -10,11 +12,34 @@
 {% endblock %}
 
 {% block content %}
-  <h1>This is content</h1>
+  <h1>{% trans "Add New Post" %}</h1>
   <form method="POST" novalidate>
     {% csrf_token %}
-    {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-success btn-block">{% trans "Submit" %}</button>
+    {# % include 'includes/form.html' % #}
+    <div class="row">
+      <div class="col col-lg-9 col-12">
+        <div class="card">
+          <div class="card-body">
+            {% include 'includes/field.html' with field=form.title only %}
+            {% include 'includes/field.html' with field=form.body only %}
+            {% include 'includes/field.html' with field=form.description only %}
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-3 col-12">
+        <div class="card">
+          <div class="card-body">
+            {% include 'includes/field.html' with field=form.slug only %}
+            {% include 'includes/field.html' with field=form.category only %}
+            {% include 'includes/field.html' with field=form.language only %}
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+            <button type="submit" class="btn btn-success">{% trans "Publish" %}</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
 {% endblock %}
 
@@ -40,6 +65,13 @@
           media: MediaButton,
         }
       });
+    });
+
+    $('#id_title').focusout(function() {
+      if ($('#id_slug').val().trim() == '') {
+        var slug = $(this).val().slugify();
+        $('#id_slug').val(slug);
+      }
     });
   </script>
 {% endblock %}
