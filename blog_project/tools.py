@@ -33,3 +33,18 @@ def range_pagination(current_page, num_pages, limit=10):
     """
     start, end = _get_pagination(current_page, num_pages, limit)
     return range(start, end + 1)
+
+
+def dict_pagination(current_page, num_pages, limit=10):
+    """To get pagination dictionary number, used for JSON data.
+    :param current_page: position of current page
+    :param num_pages: count of total pagination page
+    :param limit: length of pagination page
+    :return: Range of start & end value of pagination
+    """
+    start, end = _get_pagination(current_page, num_pages, limit)
+    return {
+        'start': start,
+        'current': current_page,
+        'end': end,
+    }

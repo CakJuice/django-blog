@@ -20,6 +20,7 @@ from django.conf import settings
 
 from blog_project.base import views as base_views
 from blog_project.post import views as post_views
+from blog_project.file_media import views as media_views
 
 urlpatterns = [
     path('', base_views.homepage, name='homepage'),
@@ -50,6 +51,8 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('admin/', include('blog_project.blog_admin.urls')),
     path('categories/', post_views.CategoryListView.as_view(), name='category_index'),
+
+    path('ajax/media/', media_views.ajax_media_index, name='ajax_media_index'),
 
     path('i18n/', include('django.conf.urls.i18n')),
     # path('summernote/', include('django_summernote.urls')),

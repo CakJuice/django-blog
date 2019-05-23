@@ -6,7 +6,7 @@
 {% block title %}{% trans "New Post" %}{% endblock %}
 
 {% block extra_head %}
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -19,27 +19,9 @@
 {% endblock %}
 
 {% block extra_body %}
-  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="showMediaModal" aria-hidden="true" id="mediaModal">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% include 'includes/admin_media_modal.html' %}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.min.js"></script>
   <script src="{% static 'js/summernote-ext-highlight.js' %}"></script>
   <script src="{% static 'js/summernote-media.js' %}"></script>
   <script type="text/javascript">
@@ -59,13 +41,5 @@
         }
       });
     });
-  </script>
-  <script>
-    function testInsertSummernote() {
-      $('#id_body').summernote('editor.saveRange');
-      $('#id_body').summernote('editor.restoreRange');
-      $('#id_body').summernote('editor.focus');
-      $('#id_body').summernote('editor.pasteHTML', '<p>This is added text.</p>');
-    }
   </script>
 {% endblock %}
