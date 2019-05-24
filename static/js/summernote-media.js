@@ -17,11 +17,12 @@ var getMediaThumbnail = function(file) {
     '<div class="col col-lg-2 col-md-4 col-6">',
     '<img src="' + file.thumbnail + '" class="img-fluid img-media-modal rounded mx-auto d-block" alt="' + file.alt + '" loading="lazy" data-media="' + file.media + '">',
     '</div>'
-  ].join('')
+  ].join('');
 }
 
 var showMedia = function() {
-  $('#mediaModal .modal-body').empty();
+  $('#mediaModal').modal('show');
+  $('#media-list-content').html(getSpinner());
 
   $.get('/ajax/media/').done(function(response) {
     if (response.success && response.files.length > 0) {
@@ -31,7 +32,7 @@ var showMedia = function() {
         elem += getMediaThumbnail(file);
       }
 
-      $('#mediaModal .modal-body').html('<div class="row">' + elem + '</div>');
+      $('#media-list-content').html('<div class="row">' + elem + '</div>');
 
       $('.img-media-modal').click(function() {
         var $self = $(this);
@@ -46,8 +47,6 @@ var showMedia = function() {
       });
     }
   });
-
-  $('#mediaModal').modal('show');
 
   $('.btn-choose').click(function() {
     var mediaActive = $('.img-media-modal.media-active');
@@ -70,4 +69,14 @@ function insertImageSummernote(id, src) {
   $('#'+id).summernote('editor.restoreRange');
   $('#'+id).summernote('editor.focus');
   $('#'+id).summernote('editor.pasteHTML', '<img src="' + src + '" class="img-fluid" loading="lazy">');
+}
+
+function getSpinner() {
+  return [
+    '<div class="d-flex justify-content-center">',
+    '<div class="spinner-border text-primary" role="status">',
+    '<span class="sr-only">Loading...</span>',
+    '</div>',
+    '</div>',
+  ].join('');
 }
