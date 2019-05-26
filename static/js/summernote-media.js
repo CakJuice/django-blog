@@ -24,29 +24,7 @@ var showMedia = function() {
   $('#mediaModal').modal('show');
   $('#media-list-content').html(getSpinner());
 
-  $.get('/ajax/media/').done(function(response) {
-    if (response.success && response.files.length > 0) {
-      elem = '';
-      for (var i=0;i<response.files.length;i++) {
-        var file = response.files[i];
-        elem += getMediaThumbnail(file);
-      }
-
-      $('#media-list-content').html('<div class="row">' + elem + '</div>');
-
-      $('.img-media-modal').click(function() {
-        var $self = $(this);
-        $('.img-media-modal').each(function() {
-          if (!$self.is($(this))) {
-            this.classList.remove('media-active');
-          }
-        });
-        this.classList.toggle('media-active');
-
-        $('#mediaModal .btn-choose').removeAttr('disabled');
-      });
-    }
-  });
+  ajaxMedia('/ajax/media/');
 
   $('.btn-choose').click(function() {
     var mediaActive = $('.img-media-modal.media-active');
@@ -59,8 +37,44 @@ var showMedia = function() {
   });
 }
 
+function ajaxMedia(url) {
+  var baseUrl = url.split(/[?#]/)[0];
+
+  $.get(url).done(function(response) {
+    if (!response.success || response.files.length <= 0)
+      return;
+
+    elem = '';
+    for (var i=0;i<response.files.length;i++) {
+      var file = response.files[i];
+      elem += getMediaThumbnail(file);
+    }
+
+    $('#media-list-content').html('<div class="row">' + elem + '</div>');
+
+    $('#media-list-content').append(getPagination(response.pagination, baseUrl, true));
+    $('.page-link.is-ajax').click(function(event) {
+      event.preventDefault();
+      resetModal();
+      ajaxMedia($(this).attr('href'));
+    });
+
+    $('.img-media-modal').click(function() {
+      var $self = $(this);
+      $('.img-media-modal').each(function() {
+        if (!$self.is($(this))) {
+          this.classList.remove('media-active');
+        }
+      });
+      this.classList.toggle('media-active');
+
+      $('#mediaModal .btn-choose').removeAttr('disabled');
+    });
+  });
+}
+
 function resetModal() {
-  $('#mediaModal .modal-body').empty();
+  $('#media-list-content').html(getSpinner());
   $('#mediaModal .btn-choose').prop('disabled', true);
 }
 

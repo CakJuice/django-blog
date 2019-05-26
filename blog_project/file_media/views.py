@@ -10,7 +10,8 @@ from .models import FileMedia
 
 def ajax_media_index(request):
     file_queryset = FileMedia.objects.all()
-    paginator = Paginator(file_queryset, 10)
+    obj_len = 24
+    paginator = Paginator(file_queryset, obj_len)
     page = request.GET.get('page', '1')
     files = paginator.get_page(page)
 
@@ -31,7 +32,7 @@ def ajax_media_index(request):
             'media': file.media.url,
             'alt': file.alt,
             'description': file.description,
-            'thumbnail': get_thumbnail(file.media, '125x125', crop='center').url
+            'thumbnail': get_thumbnail(file.media, '160x160', crop='center').url
         })
 
     return JsonResponse({
