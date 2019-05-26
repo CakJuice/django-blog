@@ -1,16 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
-from django.core.paginator import Paginator
-
-from blog_project.post.models import Category
-from . import forms
 
 from blog_project.file_media.models import FileMedia
+from blog_project.post.models import Category
 from blog_project.tools import range_pagination
+from . import forms
 
 
 # Create your views here.
@@ -100,11 +99,15 @@ def category_delete(request, pk):
 
 @login_required
 def post_create(request):
+    media_form = forms.FileMediaCreateForm()
     if request.method == 'POST':
         form = forms.PostForm(request.POST)
     else:
         form = forms.PostForm()
-    context = {'form': form}
+    context = {
+        'form': form,
+        'media_form': media_form
+    }
     return render(request, 'admin/post/create.html', context=context)
 
 
@@ -117,10 +120,21 @@ def file_media_create(request):
             media.created_by = request.user
             media.save()
             messages.success(request, _("Successfully upload a new media."))
+            if request.is_ajax():
+                return JsonResponse({
+                    'success': True,
+                    'redirect': reverse('admin_file_media_create')
+                })
             return redirect('admin_file_media_index')
+        else:
+            if request.is_ajax():
+                return JsonResponse(form.errors)
     else:
         form = forms.FileMediaCreateForm()
     context = {'form': form}
+
+    if request.is_ajax():
+        return render(request, 'admin/file_media/_form.html', context=context)
     return render(request, 'admin/file_media/create.html', context=context)
 
 

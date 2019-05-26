@@ -7,7 +7,6 @@ from .models import FileMedia
 
 
 # Create your views here.
-
 def ajax_media_index(request):
     file_queryset = FileMedia.objects.all()
     obj_len = 24

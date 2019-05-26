@@ -35,6 +35,11 @@ var showMedia = function() {
       resetModal();
     }
   });
+
+  $('#form-media').submit(function(event) {
+    event.preventDefault();
+    submitFormAjax(this);
+  });
 }
 
 function ajaxMedia(url) {
