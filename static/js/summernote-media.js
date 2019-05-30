@@ -25,12 +25,15 @@ var showMedia = function() {
   $('#media-list-content').html(getSpinner());
 
   ajaxMedia('/ajax/media/');
+}
 
+$(function() {
   $('.btn-choose').click(function() {
     var mediaActive = $('.img-media-modal.media-active');
     if (mediaActive.length > 0) {
       var src = mediaActive.first().attr('data-media');
-      insertImageSummernote('id_body', src);
+      var alt = mediaActive.first().attr('alt');
+      insertImageSummernote('id_body', src, alt);
       $('#mediaModal').modal('hide');
       resetModal();
     }
@@ -38,9 +41,16 @@ var showMedia = function() {
 
   $('#form-media').submit(function(event) {
     event.preventDefault();
-    submitFormAjax(this);
+    submitMediaAjax(this);
   });
-}
+
+  $('#mediaModal').on('hide.bs.modal', function(event) {
+    document.getElementById('form-media').reset();
+    $('#img-container').empty();
+    var $file = document.getElementById('id_media');
+    resetFileInputLabel($file);
+  });
+});
 
 function ajaxMedia(url) {
   var baseUrl = url.split(/[?#]/)[0];
@@ -83,11 +93,12 @@ function resetModal() {
   $('#mediaModal .btn-choose').prop('disabled', true);
 }
 
-function insertImageSummernote(id, src) {
+function insertImageSummernote(id, src, alt) {
+  alt = alt || '';
   $('#'+id).summernote('editor.saveRange');
   $('#'+id).summernote('editor.restoreRange');
   $('#'+id).summernote('editor.focus');
-  $('#'+id).summernote('editor.pasteHTML', '<img src="' + src + '" class="img-fluid" loading="lazy">');
+  $('#'+id).summernote('editor.pasteHTML', '<img src="' + src + '" class="img-fluid" loading="lazy" alt="' + alt + '">');
 }
 
 function getSpinner() {
@@ -98,4 +109,22 @@ function getSpinner() {
     '</div>',
     '</div>',
   ].join('');
+}
+
+function mediaUploadSuccess(response) {
+  insertImageSummernote('id_body', response.media.url, response.media.alt);
+  $('#mediaModal').modal('hide');
+  resetModal();
+}
+
+function submitMediaAjax($form) {
+  /* Submit form via ajax.
+   * param $form: DOM of form element.
+  */
+  var urlTarget = $form.getAttribute('action');
+  if (!urlTarget) {
+    urlTarget = window.location.href;
+  }
+
+  ajaxPostData(urlTarget, $form, mediaUploadSuccess);
 }

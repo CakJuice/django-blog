@@ -123,7 +123,11 @@ def file_media_create(request):
             if request.is_ajax():
                 return JsonResponse({
                     'success': True,
-                    'redirect': reverse('admin_file_media_create')
+                    'redirect': reverse('admin_file_media_create'),
+                    'media': {
+                        'url': media.media.url,
+                        'alt': media.alt,
+                    }
                 })
             return redirect('admin_file_media_index')
         else:

@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+function resetFileInputLabel($file) {
+  $file.nextElementSibling.innerHTML = 'Choose file';
+}
+
 function ajaxGetForm(url, elemParent) {
   $.get(url, function(response) {
     $elem = document.getElementById(elemParent);
@@ -70,8 +74,14 @@ function getChildInputElement($parent) {
   return $inputs;
 }
 
-function ajaxPostData(url, $form) {
+function redirectAjaxSuccess(response) {
+  // redirect when success
+  window.location.href = response.redirect;
+}
+
+function ajaxPostData(url, $form, successResponse) {
   // Handle ajax form post data
+  successResponse = successResponse || redirectAjaxSuccess;
   removeAlertForm($form);
   var formData = new FormData($form);
   $.ajax({
@@ -93,8 +103,7 @@ function ajaxPostData(url, $form) {
     data: formData,
   }).done(function(response) {
     if (response.hasOwnProperty('success')) {
-      // redirect when success
-      window.location.href = response.redirect;
+      successResponse(response);
       return;
     }
 
