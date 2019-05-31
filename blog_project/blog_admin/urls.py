@@ -12,6 +12,7 @@ urlpatterns = [
     path('category/<int:pk>/delete/', views.category_delete, name='admin_category_delete'),
 
     path('post/create/', views.post_create, name='admin_post_create'),
+    path('post/<int:pk>/update/', views.post_update, name='admin_post_update'),
 
     path('media/', views.file_media_index, name='admin_file_media_index'),
     path('media/create/', views.file_media_create, name='admin_file_media_create'),

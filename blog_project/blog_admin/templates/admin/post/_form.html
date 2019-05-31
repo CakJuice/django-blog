@@ -1,0 +1,35 @@
+{% load i18n %}
+{% load widget_tweaks %}
+{% load form_tags %}
+
+<form method="POST" onsubmit="postSubmitAjax(this); return false;" novalidate>
+  {% csrf_token %}
+  <div class="row">
+    <div class="col col-lg-9 col-12">
+      <div class="card">
+        <div class="card-body">
+          {% include 'includes/field.html' with field=form.title only %}
+          {% include 'includes/field.html' with field=form.body only %}
+          {% include 'includes/field.html' with field=form.description only %}
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-3 col-12">
+      <div class="card">
+        <div class="card-body">
+          {% include 'includes/field.html' with field=form.slug only %}
+          {% include 'includes/field.html' with field=form.category only %}
+          {% include 'includes/field.html' with field=form.language only %}
+        </div>
+        <div class="card-footer">
+          {% if form.instance.pk %}
+            <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>
+          {% else %}
+            <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+          {% endif %}
+<!--          <button type="submit" class="btn btn-success">{# % trans "Publish" % #}</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

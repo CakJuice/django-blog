@@ -1,8 +1,5 @@
 {% extends 'layouts/admin_layout.html' %}
-{% load static %}
 {% load i18n %}
-{% load widget_tweaks %}
-{% load form_tags %}
 
 {% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
 {% block title %}{% trans "New Post" %}{% endblock %}
@@ -12,70 +9,14 @@
 {% endblock %}
 
 {% block content %}
-  <h1>{% trans "Add New Post" %}</h1>
-  <form method="POST" novalidate>
-    {% csrf_token %}
-    {# % include 'includes/form.html' % #}
-    <div class="row">
-      <div class="col col-lg-9 col-12">
-        <div class="card">
-          <div class="card-body">
-            {% include 'includes/field.html' with field=form.title only %}
-            {% include 'includes/field.html' with field=form.body only %}
-            {% include 'includes/field.html' with field=form.description only %}
-          </div>
-        </div>
-      </div>
-      <div class="col col-lg-3 col-12">
-        <div class="card">
-          <div class="card-body">
-            {% include 'includes/field.html' with field=form.slug only %}
-            {% include 'includes/field.html' with field=form.category only %}
-            {% include 'includes/field.html' with field=form.language only %}
-          </div>
-          <div class="card-footer">
-            <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
-<!--            <button type="submit" class="btn btn-success">{# % trans "Publish" % #}</button>-->
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
+  {% if form.instance.pk %}
+    <h1>{% trans "Update Post" %}</h1>
+  {% else %}
+    <h1>{% trans "Add New Post" %}</h1>
+  {% endif %}
+  {% include 'admin/post/_form.html' %}
 {% endblock %}
 
 {% block extra_body %}
-  {% include 'includes/admin_media_modal.html' %}
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.min.js"></script>
-  <script src="{% static 'js/summernote-ext-highlight.js' %}"></script>
-  <script src="{% static 'js/summernote-media.js' %}"></script>
-  <script src="{% static 'js/summernote-more.js' %}"></script>
-  <script type="text/javascript">
-    var activePostId = null;
-
-    $(function() {
-      $('#id_body').summernote({
-        toolbar: [
-          ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
-          ['font', ['strikethrough', 'superscript', 'subscript']],
-          ['fontstyle', ['fontname', 'fontsize']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['height', ['height']],
-          ['media', ['media', 'more', 'highlight', 'codeview']],
-        ],
-        buttons: {
-          media: MediaButton,
-          more: MoreButton,
-        }
-      });
-    });
-
-    $('#id_title').focusout(function() {
-      if ($('#id_slug').val().trim() == '') {
-        var slug = $(this).val().slugify();
-        $('#id_slug').val(slug);
-      }
-    });
-  </script>
+  {% include 'admin/post/_extra.html' %}
 {% endblock %}

@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 
 from blog_project.file_media.models import FileMedia
-from blog_project.post.models import Category
+from blog_project.post.models import Category, Post
 from blog_project.tools import range_pagination
 from . import forms
 
@@ -99,11 +99,49 @@ def category_delete(request, pk):
 
 @login_required
 def post_create(request):
-    media_form = forms.FileMediaCreateForm()
     if request.method == 'POST':
         form = forms.PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.created_by = request.user
+            post.save()
+            if request.is_ajax():
+                return JsonResponse({
+                    'success': True,
+                    'id': post.id,
+                })
+            return redirect('admin_post_create')
+        else:
+            if request.is_ajax():
+                return JsonResponse(form.errors)
     else:
         form = forms.PostForm()
+
+    media_form = forms.FileMediaCreateForm()
+    context = {
+        'form': form,
+        'media_form': media_form
+    }
+    return render(request, 'admin/post/create.html', context=context)
+
+
+@login_required
+def post_update(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = forms.PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            if request.is_ajax():
+                return JsonResponse({
+                    'success': True,
+                    'id': post.id,
+                })
+            return redirect('admin_post_create')
+    else:
+        form = forms.PostForm(instance=post)
+
+    media_form = forms.FileMediaCreateForm()
     context = {
         'form': form,
         'media_form': media_form

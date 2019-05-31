@@ -18,9 +18,9 @@ class BaseModel(models.Model):
 
 
 class Category(BaseModel):
-    name = models.CharField(max_length=60, verbose_name=_("Name"), null=True, blank=True)
-    description = models.CharField(max_length=158, verbose_name=_("Description"), null=True, blank=True)
-    slug = models.CharField(max_length=64, unique=True, db_index=True, verbose_name=_("Slug"), null=True, blank=True)
+    name = models.CharField(max_length=60, verbose_name=_("Name"))
+    description = models.CharField(max_length=158, verbose_name=_("Description"), blank=True)
+    slug = models.CharField(max_length=64, unique=True, db_index=True, verbose_name=_("Slug"), blank=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='childs',
                                verbose_name=_("Parent Category"))
     language = models.CharField(max_length=6, choices=settings.LANGUAGES, verbose_name=_("Language"), default='en-us')
@@ -47,12 +47,13 @@ class Post(BaseModel):
         (9, 'Archived'),
     )
 
-    title = models.CharField(max_length=120, verbose_name=_("Title"))
-    description = models.CharField(max_length=158, verbose_name=_("Description"))
-    slug = models.CharField(max_length=128, unique=True, db_index=True, verbose_name=_("Slug"), blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts', verbose_name=_("Category"))
-    body = models.TextField(verbose_name=_("Body"))
-    body_preview = models.TextField(verbose_name=_("Body Preview"))
+    title = models.CharField(max_length=120, verbose_name=_("Title"), null=True, blank=True)
+    description = models.CharField(max_length=158, verbose_name=_("Description"), null=True, blank=True)
+    slug = models.CharField(max_length=128, unique=True, db_index=True, verbose_name=_("Slug"), null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts', verbose_name=_("Category"),
+                                 null=True, blank=True)
+    body = models.TextField(verbose_name=_("Body"), null=True, blank=True)
+    body_preview = models.TextField(verbose_name=_("Body Preview"), null=True, blank=True)
     read = models.IntegerField(verbose_name=_("Read"), default=0)
     state = models.IntegerField(verbose_name=_("State"), default=0)
     publish_date = models.DateTimeField(verbose_name=_("Publish Date"), blank=True, null=True)
