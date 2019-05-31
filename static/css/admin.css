@@ -4,9 +4,9 @@
 
 .img-media-modal {
   cursor: pointer;
-  border: 3px solid #82b1ff;
+  border: 5px solid #82b1ff;
 }
 
 .media-active {
-  border: 3px solid #0261ff;
+  border: 5px solid #0261ff;
 }

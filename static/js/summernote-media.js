@@ -13,9 +13,14 @@ var MediaButton = function(context) {
 }
 
 var getMediaThumbnail = function(file) {
+  var alt = '';
+  if (file.alt != null ) {
+    alt = file.alt;
+  }
+
   return [
-    '<div class="col col-lg-2 col-md-4 col-6">',
-    '<img src="' + file.thumbnail + '" class="img-fluid img-media-modal rounded mx-auto d-block" alt="' + file.alt + '" loading="lazy" data-media="' + file.media + '">',
+    '<div class="col col-lg-2 col-md-4 col-6 my-2">',
+    '<img src="' + file.thumbnail + '" class="img-fluid img-media-modal rounded mx-auto d-block" alt="' + alt + '" loading="lazy" data-media="' + file.media + '">',
     '</div>'
   ].join('');
 }
