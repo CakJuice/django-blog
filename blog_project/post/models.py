@@ -18,9 +18,9 @@ class BaseModel(models.Model):
 
 
 class Category(BaseModel):
-    name = models.CharField(max_length=60, verbose_name=_("Name"))
-    description = models.CharField(max_length=158, verbose_name=_("Description"), blank=True)
-    slug = models.CharField(max_length=64, unique=True, db_index=True, verbose_name=_("Slug"), blank=True)
+    name = models.CharField(max_length=60, verbose_name=_("Name"), null=True, blank=True)
+    description = models.CharField(max_length=158, verbose_name=_("Description"), null=True, blank=True)
+    slug = models.CharField(max_length=64, unique=True, db_index=True, verbose_name=_("Slug"), null=True, blank=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='childs',
                                verbose_name=_("Parent Category"))
     language = models.CharField(max_length=6, choices=settings.LANGUAGES, verbose_name=_("Language"), default='en-us')
