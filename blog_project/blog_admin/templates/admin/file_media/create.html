@@ -1,0 +1,11 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "Add File Media" %}{% endblock %}
+
+{% block content %}
+  <h1 class="h3 text-gray-800">{% trans "Add File Media" %}</h1>
+  {% include 'admin/file_media/_form.html' %}
+{% endblock %}

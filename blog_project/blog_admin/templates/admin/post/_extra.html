@@ -1,0 +1,53 @@
+{% load static %}
+
+{% include 'includes/admin_media_modal.html' %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.min.js"></script>
+<script src="{% static 'js/summernote-ext-highlight.js' %}"></script>
+<script src="{% static 'js/summernote-media.js' %}"></script>
+<script src="{% static 'js/summernote-more.js' %}"></script>
+<script type="text/javascript">
+  var activePostId = null;
+  {% if form.instance.pk %}
+    activePostId = {{ form.instance.pk }};
+  {% endif %}
+
+  $(function() {
+    $('#id_body').summernote({
+      toolbar: [
+        ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['fontstyle', ['fontname', 'fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['media', ['media', 'more', 'highlight', 'codeview']],
+      ],
+      buttons: {
+        media: MediaButton,
+        more: MoreButton,
+      }
+    });
+  });
+
+  $('#id_title').focusout(function() {
+    if ($('#id_slug').val().trim() == '') {
+      var slug = $(this).val().slugify();
+      $('#id_slug').val(slug);
+    }
+  });
+
+  function postAjaxSuccess(response) {
+    if (response.id) {
+      activePostId = response.id;
+    }
+  }
+
+  function postSubmitAjax($form) {
+    var submitUrl = '/admin/post/create/';
+    if (activePostId != null) {
+      submitUrl = '/admin/post/' + activePostId + '/update/';
+    }
+    ajaxPostData(submitUrl, $form, postAjaxSuccess);
+  }
+</script>

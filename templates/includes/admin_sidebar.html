@@ -1,0 +1,67 @@
+{% load i18n %}
+
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'homepage' %}">
+    <div class="sidebar-brand-icon">
+      <i class="fas fa-home"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">{% trans "Homepage" %}</div>
+  </a>
+
+  <hr class="sidebar-divider my-0">
+
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'admin_dashboard' %}">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>{% trans "Dashboard" %}</span>
+    </a>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePost" aria-expanded="true"
+       aria-controls="collapsePost">
+      <i class="fas fa-fw fa-thumbtack rotate-15"></i>
+      <span>{% trans "Posts" %}</span>
+    </a>
+    <div id="collapsePost" class="collapse" aria-labelledby="headingPosts" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="#">{% trans "All Posts" %}</a>
+        <a class="collapse-item" href="{% url 'admin_post_create' %}">{% trans "New Post" %}</a>
+        <a class="collapse-item" href="{% url 'admin_category_index' %}">{% trans "Categories" %}</a>
+        <a class="collapse-item" href="#">{% trans "Tags" %}</a>
+      </div>
+    </div>
+  </li>
+
+  <hr class="sidebar-divider my-0">
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+       aria-controls="collapsePages">
+      <i class="fas fa-fw fa-copy"></i>
+      <span>{% trans "Pages" %}</span>
+    </a>
+    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="#">{% trans "All Pages" %}</a>
+        <a class="collapse-item" href="#">{% trans "New Pages" %}</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMedia" aria-expanded="true"
+       aria-controls="collapsePages">
+      <i class="fas fa-fw fa-file-image"></i>
+      <span>{% trans "Media" %}</span>
+    </a>
+    <div id="collapseMedia" class="collapse" aria-labelledby="headingMedia" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'admin_file_media_index' %}">{% trans "File Media" %}</a>
+        <a class="collapse-item" href="{% url 'admin_file_media_create' %}">{% trans "Add File Media" %}</a>
+      </div>
+    </div>
+  </li>
+</ul>

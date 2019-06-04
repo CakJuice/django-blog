@@ -1,0 +1,37 @@
+{% load i18n %}
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="showMediaModal" aria-hidden="true" id="mediaModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans "Insert Media" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body px-3">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" id="media-list-tab" data-toggle="tab" href="#media-list"
+               aria-controls="media-list" aria-selected="true">Media List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="media-upload-tab" data-toggle="tab" href="#media-upload"
+               aria-controls="media-upload" aria-selected="false">Upload Media</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="mediaTabContent">
+          <div class="tab-pane fade show active" id="media-list" role="tabpanel" aria-labelledby="media-list">
+            <div id="media-list-content" class="py-3"></div>
+            <div>
+              <button type="button" class="btn btn-primary btn-choose" disabled>{% trans "Choose Image" %}</button>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="media-upload" role="tabpanel" aria-labelledby="media-upload">
+            {% include 'admin/file_media/_form.html' with form=media_form %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

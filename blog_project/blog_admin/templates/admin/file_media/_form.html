@@ -1,0 +1,35 @@
+{% load widget_tweaks %}
+{% load form_tags %}
+
+<div class="row my-3">
+  <div class="col col-lg-4 col-12">
+    <form action="{% url 'admin_file_media_create' %}" method="POST" enctype="multipart/form-data" id="form-media"
+          novalidate>
+      {% csrf_token %}
+      {% render_field form.name class="d-none" %}
+      {% include 'includes/field.html' with field=form.media only %}
+      {% include 'includes/field.html' with field=form.alt only %}
+      {% include 'includes/field.html' with field=form.description only %}
+      <button type="submit" class="btn btn-success">Upload File</button>
+    </form>
+  </div>
+  <div class="col col-lg-4 col-12 py-3 px-3" id="img-container"></div>
+</div>
+
+<script>
+  var $file = document.getElementById('id_media');
+  var $imgCont = document.getElementById('img-container');
+  var $name = document.getElementById('id_name');
+  $file.addEventListener('change', function() {
+    $name.value = this.files[0].name;
+
+    var reader = new FileReader();
+    reader.addEventListener('load', function() {
+      $imgCont.innerHTML = '<img src="' + reader.result + '" class="img-fluid">';
+    }, false);
+
+    if (this.files[0]) {
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+</script>

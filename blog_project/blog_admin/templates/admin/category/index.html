@@ -1,0 +1,140 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load i18n %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "Categories" %}{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+{% endblock %}
+
+{% block content %}
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">{% trans "Category" %}</h1>
+    {% if is_update %}
+      <a href="{% url 'admin_category_index' %}" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
+        <i class="fas fa-plus-square text-white-50"></i> {% trans "New Category" %}
+      </a>
+    {% endif %}
+  </div>
+
+  {% include 'includes/alert.html' %}
+
+  <div class="row">
+    <div class="col col-lg-4 col-12">
+      <div class="card">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+            {% if is_update %}
+              {% trans "Update Category" %}
+            {% else %}
+              {% trans "New Category" %}
+            {% endif %}
+          </h6>
+        </div>
+        <div class="card-body">
+          {% include 'admin/category/_form.html' %}
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-8 col-12">
+      <div class="card">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">{% trans "All Categories" %}</h6>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="tableCategories" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>{% trans "Name" %}</th>
+                  <th>{% trans "Description" %}</th>
+                  <th>{% trans "Slug" %}</th>
+                  <th>{% trans "Language" %}</th>
+                  <th>{% trans "Action" %}</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>{% trans "Name" %}</th>
+                  <th>{% trans "Description" %}</th>
+                  <th>{% trans "Slug" %}</th>
+                  <th>{% trans "Language" %}</th>
+                  <th>{% trans "Action" %}</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for category in categories %}
+                  <tr>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td>{{ category.slug }}</td>
+                    <td>{{ category.get_language_display }}</td>
+                    <td>
+                      <a href="{% url 'admin_category_index' %}?update={{ category.id }}">Edit</a>
+                      |
+                      <a href="{% url 'admin_category_delete' pk=category.id %}" class="delete-category"
+                         data-toggle="modal" data-target="#deleteCategoryModal">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_content %}
+  <div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% trans "Confirmation" %}</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% trans "Are you sure to delete this category?" %}<br>
+          {% trans "This can be undone..." %}
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" id="btnConfirmDelete" href="#">Confirm</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_body %}
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#tableCategories').DataTable({
+        columns: [
+          null,
+          null,
+          null,
+          null,
+          { orderable: false, searchable: false },
+        ]
+      });
+
+      $('.delete-category').click(function() {
+        $('#deleteCategoryModal #btnConfirmDelete').attr('href', this.href);
+      });
+
+      $('#id_name').focusout(function() {
+        if ($('#id_slug').val().trim() == '') {
+          var slug = $(this).val().slugify();
+          $('#id_slug').val(slug);
+        }
+      });
+    });
+  </script>
+{% endblock %}

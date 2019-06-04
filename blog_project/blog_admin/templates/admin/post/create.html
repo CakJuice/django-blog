@@ -1,0 +1,22 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load i18n %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "New Post" %}{% endblock %}
+
+{% block extra_head %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  {% if form.instance.pk %}
+    <h1>{% trans "Update Post" %}</h1>
+  {% else %}
+    <h1>{% trans "Add New Post" %}</h1>
+  {% endif %}
+  {% include 'admin/post/_form.html' %}
+{% endblock %}
+
+{% block extra_body %}
+  {% include 'admin/post/_extra.html' %}
+{% endblock %}

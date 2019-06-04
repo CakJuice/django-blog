@@ -1,0 +1,12 @@
+.form-group .invalid-feedback {
+  display: block;
+}
+
+.img-media-modal {
+  cursor: pointer;
+  border: 5px solid #82b1ff;
+}
+
+.media-active {
+  border: 5px solid #0261ff;
+}
