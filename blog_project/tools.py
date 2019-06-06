@@ -48,3 +48,11 @@ def dict_pagination(current_page, num_pages, limit=10):
         'current': current_page,
         'end': end,
     }
+
+
+def create_update_instance(instance, data, exclude=['id']):
+    for key, val in data.items():
+        if key not in exclude:
+            setattr(instance, key, val)
+    instance.save()
+    return instance
