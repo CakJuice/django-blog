@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from graphene import relay
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
+from graphql_jwt.decorators import login_required
+from graphql_relay.node.node import from_global_id
 
 from blog_project.tools import create_update_instance
 
@@ -22,18 +24,23 @@ class UserNode(DjangoObjectType):
 
 class UpdateUser(relay.ClientIDMutation):
     class Input:
-        id = graphene.ID()
-        username = graphene.String()
+        id = graphene.GlobalID()
+        username = graphene.String(required=True)
         first_name = graphene.String()
         last_name = graphene.String()
 
     user = graphene.Field(UserNode)
+    status = graphene.Boolean()
 
     @classmethod
+    @login_required
     def mutate_and_get_payload(cls, root, info, **kwargs):
-        user = User.objects.get(pk=1)
-        create_update_instance(user, kwargs)
-        return UpdateUser(user=user)
+        user_id = int(from_global_id(kwargs['id'])[1])
+        if info.context.user.is_superuser or user_id == info.context.user.id:
+            user = User.objects.get(pk=user_id)
+            create_update_instance(user, kwargs)
+            return UpdateUser(user=user, status=True)
+        return UpdateUser(status=False)
 
 
 class Query:

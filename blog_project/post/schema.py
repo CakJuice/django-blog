@@ -4,6 +4,7 @@ from graphene import relay
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
 from graphql_relay.node.node import from_global_id
+from graphql_jwt.decorators import login_required
 
 from blog_project.tools import create_update_instance
 from .models import Category, Post
@@ -32,21 +33,19 @@ class CreateCategory(relay.ClientIDMutation):
         slug = graphene.String(required=True)
         parent = graphene.String()
         language = graphene.String()
-        created_by = graphene.String(required=True)
 
     category = graphene.Field(CategoryNode)
     status = graphene.Boolean()
 
     @classmethod
+    @login_required
     def mutate_and_get_payload(cls, root, info, **kwargs):
         parent = None
         if 'parent' in kwargs:
             parent_id = int(from_global_id(kwargs['parent'])[1])
             parent = Category.objects.get(pk=parent_id)
-        user_id = int(from_global_id(kwargs.get('created_by'))[1])
-        user = User.objects.get(pk=user_id)
 
-        category = Category(parent=parent, created_by=user)
+        category = Category(parent=parent, created_by=info.context.user)
         create_update_instance(category, kwargs, exclude=['parent', 'created_by'])
         return CreateCategory(category=category, status=True)
 
@@ -64,6 +63,7 @@ class UpdateCategory(relay.ClientIDMutation):
     status = graphene.Boolean()
 
     @classmethod
+    @login_required
     def mutate_and_get_payload(cls, root, info, **kwargs):
         category_id = int(from_global_id(kwargs['id'])[1])
         category = Category.objects.get(pk=category_id)
@@ -87,6 +87,7 @@ class DeleteCategory(relay.ClientIDMutation):
     status = graphene.Boolean()
 
     @classmethod
+    @login_required
     def mutate_and_get_payload(cls, root, info, **kwargs):
         category_id = int(from_global_id(kwargs['id'])[1])
         category = Category.objects.get(pk=category_id)
