@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'sorl.thumbnail',
     'graphene_django',
+    'graphql_jwt',
     'blog_project.file_media',
     'blog_project.base',
     'blog_project.post',
@@ -101,7 +102,15 @@ DB_TABLE_PREFIX = 'djwb_'
 
 GRAPHENE = {
     'SCHEMA': 'blog_project.schema.schema',
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ]
 }
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
