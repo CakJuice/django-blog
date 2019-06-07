@@ -35,6 +35,7 @@ class CreateCategory(relay.ClientIDMutation):
         created_by = graphene.String(required=True)
 
     category = graphene.Field(CategoryNode)
+    status = graphene.Boolean()
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **kwargs):
@@ -47,7 +48,52 @@ class CreateCategory(relay.ClientIDMutation):
 
         category = Category(parent=parent, created_by=user)
         create_update_instance(category, kwargs, exclude=['parent', 'created_by'])
-        return CreateCategory(category=category)
+        return CreateCategory(category=category, status=True)
+
+
+class UpdateCategory(relay.ClientIDMutation):
+    class Input:
+        id = graphene.GlobalID()
+        name = graphene.String(required=True)
+        description = graphene.String()
+        slug = graphene.String(required=True)
+        parent = graphene.String()
+        language = graphene.String()
+
+    category = graphene.Field(CategoryNode)
+    status = graphene.Boolean()
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **kwargs):
+        category_id = int(from_global_id(kwargs['id'])[1])
+        category = Category.objects.get(pk=category_id)
+        if not category:
+            return UpdateCategory(status=False)
+
+        create_update_instance(category, kwargs, exclude=['id', 'parent'])
+        if 'parent' in kwargs:
+            parent_id = int(from_global_id(kwargs['parent'])[1])
+            parent = Category.objects.get(pk=parent_id)
+            category.parent = parent
+
+        category.save()
+        return UpdateCategory(category=category, status=True)
+
+
+class DeleteCategory(relay.ClientIDMutation):
+    class Input:
+        id = graphene.GlobalID()
+
+    status = graphene.Boolean()
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **kwargs):
+        category_id = int(from_global_id(kwargs['id'])[1])
+        category = Category.objects.get(pk=category_id)
+        if not category:
+            return DeleteCategory(status=False)
+        category.delete()
+        return DeleteCategory(status=True)
 
 
 class PostNode(DjangoObjectType):
@@ -74,3 +120,5 @@ class Query:
 
 class Mutation:
     create_category = CreateCategory.Field()
+    update_category = UpdateCategory.Field()
+    delete_category = DeleteCategory.Field()
