@@ -23,11 +23,13 @@ from graphene_django.views import GraphQLView
 from blog_project.base import views as base_views
 from blog_project.file_media import views as media_views
 from blog_project.post import views as post_views
+from .views import reactjs
 
 urlpatterns = [
     path('', base_views.homepage, name='homepage'),
 
     path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path('reactjs/', reactjs, name='reactjs'),
 
     path('login/', auth_views.LoginView.as_view(template_name='base/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
