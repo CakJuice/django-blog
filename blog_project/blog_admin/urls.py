@@ -3,7 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.react_view, name='admin_index'),
+    path('', views.react_view, name='admin_dashboard'),
+    path('categories/', views.react_view, name='admin_categories'),
+
     # path('', views.index, name='admin_index'),
     # path('dashboard/', views.dashboard, name='admin_dashboard'),
     #

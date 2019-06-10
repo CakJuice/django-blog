@@ -10,3 +10,8 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+// Other custom library
+String.prototype.slugify = function() {
+  return this.trim().replace(/[\W_]+/g, '-').toLowerCase();
+}
