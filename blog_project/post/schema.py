@@ -41,6 +41,7 @@ class CreateCategory(relay.ClientIDMutation):
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, root, info, **kwargs):
+        print('-- mutation --', kwargs)
         parent = None
         if 'parent' in kwargs:
             parent_id = int(from_global_id(kwargs['parent'])[1])

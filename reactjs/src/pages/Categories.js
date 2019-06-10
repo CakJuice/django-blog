@@ -16,6 +16,10 @@ class Categories extends React.Component {
       description: '',
       slug: '',
     }
+    this.changeName = this.changeName.bind(this);
+    this.changeDescription = this.changeDescription.bind(this);
+    this.changeSlug = this.changeSlug.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   componentDidMount() {
@@ -55,28 +59,40 @@ class Categories extends React.Component {
     e.preventDefault();
     const cookies = new Cookies();
     const csrftoken = cookies.get('csrftoken');
-    console.log(csrftoken);
+    const data = {
+      name: this.state.name,
+      description: this.state.description,
+      slug: this.state.slug,
+    };
     const self = this;
+    // const mutation = `mutation createCategory($input: CreateCategoryInput!) {
+    //   createCategory
+    // }`
     axios({
       url: '/graphql',
       method: 'post',
       data: {
+        variables: {
+          "input": {
+            "name": self.state.name,
+            "description": self.state.description,
+            "slug": self.state.slug,
+            "parent": null,
+            "language": null,
+          }
+        },
         query: `
-          mutation createCategory({
-            input: {
-              name: ${self.state.name},
-              description: ${self.state.description},
-              slug: ${self.state.slug}
-            }
-          }) {
-            id
-            name
-            description
-            slug
-            createdBy {
+          mutation createCategory($input: CreateCategoryInput!) {
+            createCategory(input: $input) {
               id
-              username
-            }  
+              name
+              description
+              slug
+              createdBy {
+                id
+                username
+              }
+            }
           }
         `
       }
