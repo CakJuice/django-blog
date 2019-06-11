@@ -1,10 +1,10 @@
 import graphene
+# from graphql_jwt.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from graphene import relay
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
-# from graphql_jwt.decorators import login_required
-from django.contrib.auth.decorators import login_required
 from graphql_relay.node.node import from_global_id
 
 from blog_project.tools import create_update_instance

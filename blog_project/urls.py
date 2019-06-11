@@ -23,7 +23,6 @@ from graphene_django.views import GraphQLView
 from blog_project.base import views as base_views
 from blog_project.file_media import views as media_views
 from blog_project.post import views as post_views
-from .views import reactjs
 
 urlpatterns = [
     path('', base_views.homepage, name='homepage'),

@@ -1,11 +1,10 @@
 import graphene
-from django.contrib.auth.models import User
+from graphql_jwt.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from graphene import relay
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.types import DjangoObjectType
 from graphql_relay.node.node import from_global_id
-# from graphql_jwt.decorators import login_required
-from django.contrib.auth.decorators import login_required
 
 from blog_project.tools import create_update_instance
 from .models import Category, Post
@@ -41,7 +40,6 @@ class CreateCategory(relay.ClientIDMutation):
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, root, info, **kwargs):
-        print('-- mutation --', kwargs)
         parent = None
         if 'parent' in kwargs:
             parent_id = int(from_global_id(kwargs['parent'])[1])

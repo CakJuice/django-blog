@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'sorl.thumbnail',
     'graphene_django',
-    # 'graphql_jwt',
+    'graphql_jwt',
     # 'corsheaders',
     'blog_project.file_media',
     'blog_project.base',
@@ -107,15 +107,15 @@ DB_TABLE_PREFIX = 'djwb_'
 
 GRAPHENE = {
     'SCHEMA': 'blog_project.schema.schema',
-    # 'MIDDLEWARE': [
-    #     'graphql_jwt.middleware.JSONWebTokenMiddleware',
-    # ]
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ]
 }
 
-# AUTHENTICATION_BACKENDS = [
-#     'graphql_jwt.backends.JSONWebTokenBackend',
-#     'django.contrib.auth.backends.ModelBackend',
-# ]
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # CORS_ORIGIN_WHITELIST = [
 #     'http://localhost:3000',
