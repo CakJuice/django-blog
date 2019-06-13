@@ -1,30 +1,40 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FormGroup } from 'reactstrap';
+import BaseInput from './BaseInput';
 
-const FormSelect = (props) => {
-  const listOptions = props.options.map((option) =>
-    <option key={option.key} value={option.key}>{option.value}</option>
-  );
+class FormSelect extends BaseInput {
+  constructor(props) {
+    super(props);
 
-  if (!props.required) {
-    listOptions.unshift(<option key={0} selected value></option>);
+    this.newProps = Object.assign({}, props);
+    delete this.newProps['options'];
+
+    this.changeValue = this.changeValue.bind(this);
   }
 
-  delete props.options;
+  changeValue(e) {
+    this.resetValid();
+    this.setState({
+      value: e.target.value,
+    });
+  }
 
-  return (
-    <FormGroup>
-      <label htmlFor={props.name}>{props.label}</label>
-      <select className="form-control" {...props}>
-        {listOptions}
-      </select>
-    </FormGroup>
-  );
-}
+  render() {
+    const listOptions = this.props.options.map((option) =>
+      <option key={option.key} value={option.key}>{option.value}</option>
+    );
+    listOptions.unshift(<option key={0} defaultValue value></option>);
 
-FormSelect.propTypes = {
-  options: PropTypes.array,
+    return (
+      <FormGroup>
+        <label htmlFor={this.props.name}>{this.props.label}</label>
+        <select className={this.getClassName()} {...this.newProps} onChange={this.changeValue}>
+          {listOptions}
+        </select>
+        {this.state.isValid === false && <div className="invalid-feedback">{this.state.errorMessage}</div>}
+      </FormGroup>
+    );
+  }
 }
 
 export default FormSelect;

@@ -12,12 +12,7 @@ import config from '../config';
 class CategoryForm extends React.Component {
   constructor(props) {
     super(props);
-    // this.dataKey = ['name', 'description', 'slug', 'parent', 'language'];
     this.state = {
-      // isTypedSlug: false,
-      // name: null,
-      // description: null,
-      // slug: null,
       selectParent: [],
     }
     
@@ -27,11 +22,10 @@ class CategoryForm extends React.Component {
     this.inputComponent = {
       name: React.createRef(),
       description: React.createRef(),
+      slug: React.createRef(),
+      parent: React.createRef(),
     };
     
-    // this.changeName = this.changeName.bind(this);
-    // this.changeDescription = this.changeDescription.bind(this);
-    // this.changeSlug = this.changeSlug.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.getCategoryParent = this.getCategoryParent.bind(this);
   }
@@ -70,63 +64,34 @@ class CategoryForm extends React.Component {
 
   componentDidMount() {
     document.title = 'Categories';
-    return;
     this.getCategoryParent();
   }
-
-  // changeName(e) {
-  //   this.setState({
-  //     name: e.target.value,
-  //   });
-
-  //   if (!this.state.isTypedSlug) {
-  //     this.setState({
-  //       slug: e.target.value.slugify(),
-  //     });
-  //   }
-  // }
-
-  // changeDescription(e) {
-  //   this.setState({
-  //     description: e.target.value,
-  //   });
-  // }
-
-  // changeSlug(e) {
-  //   this.setState({
-  //     slug: e.target.value,
-  //   });
-  //   if (!this.state.isTypedSlug) {
-  //     this.setState({
-  //       isTypedSlug: true,
-  //     });
-  //   }
-  // }
 
   submitForm(e) {
     e.preventDefault();
 
     let allValid = true;
     let dataInput = {};
+
+    if (this.inputComponent.slug.current.state.value === '') {
+      this.inputComponent.slug.current.setState({
+        value: this.inputComponent.name.current.state.value.slugify()
+      });
+    }
+
     for (const key in this.inputComponent) {
-      const valid = this.inputComponent[key].current.checkValidation();
+      const elem = this.inputComponent[key].current;
+      const valid = elem.checkValidation();
       if (valid) {
-        dataInput[key] = this.inputComponent[key].current.value || null;
+        dataInput[key] = elem.state.value || null;
       } else allValid = false;
     }
 
-    console.log(dataInput);
     if (!allValid) return;
-    return;
 
-    const self = this;
     axios.post(config.graphqlUrl, {
       variables: {
-        input: {
-          name: self.state.name,
-          description: self.state.description,
-          slug: self.state.slug,
-        }
+        input: dataInput
       },
       query: `
         mutation createCategory($input: CreateCategoryInput!) {
@@ -160,8 +125,8 @@ class CategoryForm extends React.Component {
                 <form method="POST" action={config.graphqlUrl} onSubmit={this.submitForm} noValidate>
                   <FormInput ref={this.inputComponent.name} name="name" label="Name" validators={['isRequired']} />
                   <FormInput ref={this.inputComponent.description} name="description" label="Description" />
-                  {/* <FormInput name="slug" label="Slug" onChange={this.changeSlug} value={this.state.slug} required /> */}
-                  {/* <FormSelect name="parent" label="Parent" options={this.state.selectParent} /> */}
+                  <FormInput ref={this.inputComponent.slug} name="slug" label="Slug" validators={['isRequired']} />
+                  <FormSelect ref={this.inputComponent.parent} name="parent" label="Parent" options={this.state.selectParent} />
                   <button type="submit" className="btn btn-success">Submit</button>
                 </form>
               </CardBody>
