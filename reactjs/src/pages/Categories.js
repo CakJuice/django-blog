@@ -12,7 +12,7 @@ import config from '../config';
 class CategoryForm extends React.Component {
   constructor(props) {
     super(props);
-    this.dataKey = ['name', 'description', 'slug', 'parent', 'language'];
+    // this.dataKey = ['name', 'description', 'slug', 'parent', 'language'];
     this.state = {
       // isTypedSlug: false,
       // name: null,
