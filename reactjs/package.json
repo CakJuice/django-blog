@@ -12,7 +12,8 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "reactstrap": "^8.0.0",
-    "universal-cookie": "^4.0.0"
+    "universal-cookie": "^4.0.0",
+    "validator": "^11.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

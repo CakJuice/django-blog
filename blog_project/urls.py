@@ -17,7 +17,7 @@ from django.conf import settings
 # from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 
 from blog_project.base import views as base_views
@@ -27,7 +27,7 @@ from blog_project.post import views as post_views
 urlpatterns = [
     path('', base_views.homepage, name='homepage'),
 
-    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path('graphql', GraphQLView.as_view(graphiql=True)),
 
     path('login/', auth_views.LoginView.as_view(template_name='base/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
