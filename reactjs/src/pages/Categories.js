@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardHeader,
@@ -13,7 +13,7 @@ class CategoryForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectParent: [],
+      categories: props.categories,
     }
     
     const cookies = new Cookies();
@@ -27,44 +27,12 @@ class CategoryForm extends React.Component {
     };
     
     this.submitForm = this.submitForm.bind(this);
-    this.getCategoryParent = this.getCategoryParent.bind(this);
   }
 
-  getCategoryParent() {
-    axios.post(config.graphqlUrl, {
-      query: `
-        query {
-          allCategories {
-            edges {
-              node {
-                id
-                name
-              }
-            }
-          }
-        }
-      `
-    }, {
-      headers: {
-        'X-CSRFToken': this.csrftoken,
-      }
-    }).then((response) => {
-      const edges = response.data.data.allCategories.edges;
-      const parent = edges.map((edge) => ({
-          key: edge.node.id,
-          value: edge.node.name
-        })
-      );
-      
-      this.setState({
-        selectParent: parent,
-      });
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      categories: nextProps.categories
     });
-  }
-
-  componentDidMount() {
-    document.title = 'Categories';
-    this.getCategoryParent();
   }
 
   submitForm(e) {
@@ -126,7 +94,7 @@ class CategoryForm extends React.Component {
                   <FormInput ref={this.inputComponent.name} name="name" label="Name" validators={['isRequired']} />
                   <FormInput ref={this.inputComponent.description} name="description" label="Description" />
                   <FormInput ref={this.inputComponent.slug} name="slug" label="Slug" validators={['isRequired']} />
-                  <FormSelect ref={this.inputComponent.parent} name="parent" label="Parent" options={this.state.selectParent} />
+                  <FormSelect ref={this.inputComponent.parent} name="parent" label="Parent" options={this.state.categories} />
                   <button type="submit" className="btn btn-success">Submit</button>
                 </form>
               </CardBody>
@@ -138,8 +106,61 @@ class CategoryForm extends React.Component {
   }
 }
 
-export default function Categories(props) {
-  return (
-    <CategoryForm />
-  );
+class Categories extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      categories: [],
+    }
+
+    const cookies = new Cookies();
+    this.csrftoken = cookies.get('csrftoken');
+
+    this._getAllCategories = this._getAllCategories.bind(this);
+  }
+
+  componentDidMount() {
+    document.title = 'Categories - Admin Page';
+    this._getAllCategories();
+  }
+
+  _getAllCategories() {
+    axios.post(config.graphqlUrl, {
+      query: `
+        query {
+          allCategories {
+            edges {
+              node {
+                id
+                name
+              }
+            }
+          }
+        }
+      `
+    }, {
+      headers: {
+        'X-CSRFToken': this.csrftoken,
+      }
+    }).then((response) => {
+      const edges = response.data.data.allCategories.edges;
+      const allCategories = edges.map((edge) => ({
+          key: edge.node.id,
+          value: edge.node.name
+        })
+      );
+            
+      this.setState({
+        categories: allCategories
+      });
+    });
+  }
+
+  render() {
+    return (
+      <CategoryForm categories={this.state.categories} />
+    );
+  }
 }
+
+export default Categories;
