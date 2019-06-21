@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 
 import categoriesReducer from './categoriesReducer';
 
-export default reducer = combineReducers({
+const reducer = combineReducers({
   categories: categoriesReducer,
 });
+
+export default reducer;

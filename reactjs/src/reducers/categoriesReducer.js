@@ -5,14 +5,13 @@ const initialState = {
   error: null,
 }
 
-export default categoriesReducer = (state=initialState, action) => {
+const categoriesReducer = (state=initialState, action) => {
   switch (action.type) {
     case "FETCH_CATEGORIES_PENDING": {
       return {
         ...state,
         fetching: true,
       }
-      break;
     }
     case "FETCH_CATEGORIES_REJECTED": {
       return {
@@ -28,8 +27,11 @@ export default categoriesReducer = (state=initialState, action) => {
         fetched: true,
         categories: action.payload,
       }
-      break;
+    }
+    default: {
+      return state;
     }
   }
-  return state;
 }
+
+export default categoriesReducer;

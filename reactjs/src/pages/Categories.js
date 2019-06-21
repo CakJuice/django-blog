@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import {
   Card,
   CardHeader,
@@ -8,6 +9,7 @@ import axios from 'axios';
 import FormInput from '../components/FormInput';
 import FormSelect from '../components/FormSelect';
 import config from '../config';
+import { fetchCategories } from '../actions/categoryActions';
 
 class CategoryForm extends React.Component {
   constructor(props) {
@@ -15,7 +17,7 @@ class CategoryForm extends React.Component {
     this.state = {
       categories: props.categories,
     }
-    
+
     const cookies = new Cookies();
     this.csrftoken = cookies.get('csrftoken');
 
@@ -25,7 +27,7 @@ class CategoryForm extends React.Component {
       slug: React.createRef(),
       parent: React.createRef(),
     };
-    
+
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -106,22 +108,26 @@ class CategoryForm extends React.Component {
   }
 }
 
-class Categories extends React.Component {
+const mapStoreToProps = store => ({ categories: store.categories })
+
+// class Categories extends React.Component {
+class CategoryList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      categories: [],
-    }
+    // this.state = {
+    //   categories: [],
+    // }
 
     const cookies = new Cookies();
     this.csrftoken = cookies.get('csrftoken');
 
-    this._getAllCategories = this._getAllCategories.bind(this);
+    // this._getAllCategories = this._getAllCategories.bind(this);
   }
 
   componentDidMount() {
     document.title = 'Categories - Admin Page';
-    this._getAllCategories();
+    // this._getAllCategories();
+    this.props.dispatch(fetchCategories());
   }
 
   _getAllCategories() {
@@ -149,7 +155,7 @@ class Categories extends React.Component {
           value: edge.node.name
         })
       );
-            
+
       this.setState({
         categories: allCategories
       });
@@ -157,10 +163,24 @@ class Categories extends React.Component {
   }
 
   render() {
+    const { categories } = this.props;
+    let mappedCategory = [];
+    console.log(categories);
+    if (categories.categories.length > 0) {
+      console.log('should be mapped');
+      mappedCategory = categories.categories.map(category => <li>{ category.title }</li>)
+    }
     return (
-      <CategoryForm categories={this.state.categories} />
+      // <CategoryForm categories={this.state.categories} />
+      <div>
+        <ul>
+          { mappedCategory }
+        </ul>
+      </div>
     );
   }
 }
+
+const Categories = connect(mapStoreToProps)(CategoryList);
 
 export default Categories;
