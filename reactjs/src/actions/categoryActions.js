@@ -1,6 +1,4 @@
-import Axios from "axios";
-
-// import axios from 'axios';
+import axios from "axios";
 
 export function fetchCategories() {
   // fetch('https://jsonplaceholder.typicode.com/todos')
@@ -13,6 +11,6 @@ export function fetchCategories() {
   //   });
   return {
     type: 'FETCH_CATEGORIES',
-    payload: Axios.get('https://jsonplaceholder.typicode.com/todos')
+    payload: axios.get('https://jsonplaceholder.typicode.com/todos')
   }
 }

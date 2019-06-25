@@ -168,7 +168,7 @@ class CategoryList extends React.Component {
     console.log(categories);
     if (categories.categories.length > 0) {
       console.log('should be mapped');
-      mappedCategory = categories.categories.map(category => <li>{ category.title }</li>)
+      mappedCategory = categories.categories.map(category => <li key={category.id}>{ category.title }</li>)
     }
     return (
       // <CategoryForm categories={this.state.categories} />
