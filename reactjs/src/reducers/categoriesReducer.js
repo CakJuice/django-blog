@@ -25,7 +25,7 @@ const categoriesReducer = (state=initialState, action) => {
         ...state,
         fetching: false,
         fetched: true,
-        categories: action.payload.data,
+        categories: action.payload.data.data.allCategories.edges,
       }
     }
     default: {

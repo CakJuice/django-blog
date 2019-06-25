@@ -36,6 +36,7 @@ class CreateCategory(relay.ClientIDMutation):
 
     category = graphene.Field(CategoryNode)
     status = graphene.Boolean()
+    all_categories = DjangoFilterConnectionField(CategoryNode)
 
     @classmethod
     @login_required

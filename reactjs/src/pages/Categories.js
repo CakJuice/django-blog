@@ -14,9 +14,9 @@ import { fetchCategories } from '../actions/categoryActions';
 class CategoryForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      categories: props.categories,
-    }
+    // this.state = {
+    //   categories: props.categories,
+    // }
 
     const cookies = new Cookies();
     this.csrftoken = cookies.get('csrftoken');
@@ -31,11 +31,11 @@ class CategoryForm extends React.Component {
     this.submitForm = this.submitForm.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      categories: nextProps.categories
-    });
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({
+  //     categories: nextProps.categories
+  //   });
+  // }
 
   submitForm(e) {
     e.preventDefault();
@@ -96,7 +96,7 @@ class CategoryForm extends React.Component {
                   <FormInput ref={this.inputComponent.name} name="name" label="Name" validators={['isRequired']} />
                   <FormInput ref={this.inputComponent.description} name="description" label="Description" />
                   <FormInput ref={this.inputComponent.slug} name="slug" label="Slug" validators={['isRequired']} />
-                  <FormSelect ref={this.inputComponent.parent} name="parent" label="Parent" options={this.state.categories} />
+                  <FormSelect ref={this.inputComponent.parent} name="parent" label="Parent" options={this.props.categories} />
                   <button type="submit" className="btn btn-success">Submit</button>
                 </form>
               </CardBody>
@@ -114,69 +114,22 @@ const mapStoreToProps = store => ({ categories: store.categories })
 class CategoryList extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   categories: [],
-    // }
-
-    const cookies = new Cookies();
-    this.csrftoken = cookies.get('csrftoken');
-
-    // this._getAllCategories = this._getAllCategories.bind(this);
   }
 
   componentDidMount() {
     document.title = 'Categories - Admin Page';
-    // this._getAllCategories();
     this.props.dispatch(fetchCategories());
-  }
-
-  _getAllCategories() {
-    axios.post(config.graphqlUrl, {
-      query: `
-        query {
-          allCategories {
-            edges {
-              node {
-                id
-                name
-              }
-            }
-          }
-        }
-      `
-    }, {
-      headers: {
-        'X-CSRFToken': this.csrftoken,
-      }
-    }).then((response) => {
-      const edges = response.data.data.allCategories.edges;
-      const allCategories = edges.map((edge) => ({
-          key: edge.node.id,
-          value: edge.node.name
-        })
-      );
-
-      this.setState({
-        categories: allCategories
-      });
-    });
   }
 
   render() {
     const { categories } = this.props;
-    let mappedCategory = [];
-    console.log(categories);
-    if (categories.categories.length > 0) {
-      console.log('should be mapped');
-      mappedCategory = categories.categories.map(category => <li key={category.id}>{ category.title }</li>)
-    }
+    const mappedCategory = categories.categories.map(category => ({
+        key: category.node.id,
+        value: category.node.name
+      })
+    );
     return (
-      // <CategoryForm categories={this.state.categories} />
-      <div>
-        <ul>
-          { mappedCategory }
-        </ul>
-      </div>
+      <CategoryForm categories={mappedCategory} />
     );
   }
 }
