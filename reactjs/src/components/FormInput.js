@@ -15,6 +15,16 @@ class FormInput extends BaseInput {
     });
   }
 
+  getClassName() {
+    let inputClassName = 'form-control';
+    if (this.state.isValid === true) {
+      inputClassName += ' is-valid';
+    } else if (this.state.isValid === false) {
+      inputClassName += ' is-invalid';
+    }
+    return inputClassName;
+  }
+
   render() {
     return (
       <FormGroup>

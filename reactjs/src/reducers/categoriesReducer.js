@@ -6,32 +6,31 @@ const initialState = {
 }
 
 const categoriesReducer = (state=initialState, action) => {
-  switch (action.type) {
-    case "FETCH_CATEGORIES_PENDING": {
-      return {
-        ...state,
-        fetching: true,
-      }
+  if (action.type === "FETCH_CATEGORIES_PENDING" || action.type === "POST_FETCH_CATEGORIES_PENDING") {
+    return {
+      ...state,
+      fetching: true,
     }
-    case "FETCH_CATEGORIES_REJECTED": {
-      return {
-        ...state,
-        fetching: false,
-        error: action.payload,
-      }
+  } else if (action.type === "FETCH_CATEGORIES_REJECTED" || action.type === "POST_FETCH_CATEGORIES_REJECTED") {
+    return {
+      ...state,
+      fetching: false,
+      error: action.payload,
     }
-    case "FETCH_CATEGORIES_FULFILLED": {
-      return {
-        ...state,
-        fetching: false,
-        fetched: true,
-        categories: action.payload.data.data.allCategories.edges,
-      }
-    }
-    default: {
+  } else if (action.type === "FETCH_CATEGORIES_FULFILLED" || action.type === "POST_FETCH_CATEGORIES_FULFILLED") {
+    console.log(action.type);
+    if (action.type === "POST_FETCH_CATEGORIES_FULFILLED") {
       return state;
     }
+    return {
+      ...state,
+      fetching: false,
+      fetched: true,
+      categories: action.payload.data.data.allCategories.edges,
+    }
   }
+
+  return state;
 }
 
 export default categoriesReducer;

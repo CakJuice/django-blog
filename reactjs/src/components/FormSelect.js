@@ -6,9 +6,9 @@ class FormSelect extends BaseInput {
   constructor(props) {
     super(props);
 
-    this.state = {
-      options: props.options,
-    };
+    // this.state = {
+    //   options: props.options,
+    // };
 
     this.newProps = Object.assign({}, props);
     delete this.newProps['options'];
@@ -16,11 +16,11 @@ class FormSelect extends BaseInput {
     this.changeValue = this.changeValue.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      options: nextProps.options
-    });
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({
+  //     options: nextProps.options
+  //   });
+  // }
 
   changeValue(e) {
     this.resetValid();
@@ -30,7 +30,7 @@ class FormSelect extends BaseInput {
   }
 
   render() {
-    const listOptions = this.state.options.map((option) =>
+    const listOptions = this.props.options.map((option) =>
       <option key={option.key} value={option.key}>{option.value}</option>
     );
     listOptions.unshift(<option key={0} defaultValue value></option>);

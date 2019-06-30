@@ -41,7 +41,6 @@ export function postAndFetchCategories(variables) {
                 node {
                   id
                   name
-                  slug
                 }
               }
             }

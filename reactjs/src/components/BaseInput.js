@@ -16,6 +16,7 @@ class BaseInput extends React.Component {
     this.setError = this.setError.bind(this);
     this.setValid = this.setValid.bind(this);
     this.resetValid = this.resetValid.bind(this);
+    this.resetState = this.resetState.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
     this.getClassName = this.getClassName.bind(this);
   }
@@ -64,6 +65,11 @@ class BaseInput extends React.Component {
     });
   }
 
+  resetState() {
+    this.resetValid();
+    this.setValue('');
+  }
+
   getClassName() {
     let inputClassName = 'form-control';
     if (this.state.isValid === true) {
@@ -76,14 +82,8 @@ class BaseInput extends React.Component {
 }
 
 BaseInput.propTypes = {
-  name: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.any.isRequired,
-  ]),
-  label: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.any.isRequired,
-  ]),
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   validators: PropTypes.array,
   options: PropTypes.array,
 }
