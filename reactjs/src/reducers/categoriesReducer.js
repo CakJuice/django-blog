@@ -18,10 +18,6 @@ const categoriesReducer = (state=initialState, action) => {
       error: action.payload,
     }
   } else if (action.type === "FETCH_CATEGORIES_FULFILLED" || action.type === "POST_FETCH_CATEGORIES_FULFILLED") {
-    console.log(action.type);
-    if (action.type === "POST_FETCH_CATEGORIES_FULFILLED") {
-      return state;
-    }
     return {
       ...state,
       fetching: false,

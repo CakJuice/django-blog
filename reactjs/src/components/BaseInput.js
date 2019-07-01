@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import validator from 'validator';
-import formValidation from '../tools/FormValidation';
+import formValidation from '../tools/formValidation';
 
 class BaseInput extends React.Component {
   constructor(props) {
@@ -21,17 +21,20 @@ class BaseInput extends React.Component {
     this.getClassName = this.getClassName.bind(this);
   }
 
-  checkValidation() {    
+  checkValidation() {
     if (this.props.validators) {
       for (let v of this.props.validators) {
         const fv = formValidation[v];
-  
+        if(fv[validator] === null) {
+          continue;
+        }
+
         if (validator[fv.validator](this.state.value) !== fv.condition) {
           this.setError(fv.message);
           return false;
         }
       }
-  
+
     }
 
     this.setValid();
@@ -49,6 +52,13 @@ class BaseInput extends React.Component {
       isValid: false,
       errorMessage: message,
     });
+  }
+
+  setUniqueError() {
+    this.setState({
+      isValid: false,
+      errorMessage: formValidation.isUnique.message,
+    })
   }
 
   setValid() {

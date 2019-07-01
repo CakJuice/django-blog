@@ -8,6 +8,11 @@ const formValidation = {
     validator: 'isEmpty',
     condition: false,
     message: "This field cannot be blank."
+  },
+  isUnique: {
+    validator: null,
+    condition: true,
+    message: "This value already exists. You need to set unique value to this field."
   }
 }
 

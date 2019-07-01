@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
   Card,
@@ -6,8 +6,10 @@ import {
   CardBody } from 'reactstrap';
 import FormInput from '../components/FormInput';
 import FormSelect from '../components/FormSelect';
-// import config from '../config';
-import { fetchCategories, postAndFetchCategories } from '../actions/categoryActions';
+import config from '../config';
+import { getCSRF } from '../tools/helpers';
+import axios from 'axios';
+import { fetchCategories } from '../actions/categoryActions';
 
 // class CategoryForm extends React.Component {
 //   constructor(props) {
@@ -80,6 +82,12 @@ import { fetchCategories, postAndFetchCategories } from '../actions/categoryActi
 // }
 
 function CategoryForm(props) {
+  const optionCategories = props.categories.map(category => ({
+      key: category.node.id,
+      value: category.node.name
+    })
+  );
+
   const inputRef = {
     name: useRef(null),
     description: useRef(null),
@@ -92,6 +100,13 @@ function CategoryForm(props) {
       inputRef.slug.current.setState({
         value: inputRef.name.current.state.value.slugify()
       });
+    }
+  }
+
+  function resetForm() {
+    for (const key in inputRef) {
+      const elem = inputRef[key].current;
+      elem.resetState();
     }
   }
 
@@ -116,11 +131,50 @@ function CategoryForm(props) {
 
     if (!allValid) return;
 
-    postAndFetchCategories({ input: dataInput });
-    for (const key in inputRef) {
-      const elem = inputRef[key].current;
-      elem.resetState();
-    }
+    props.dispatch((dispatch) => {
+      dispatch({ type: "POST_FETCH_CATEGORIES_PENDING" });
+      axios.post(config.graphqlUrl, {
+        variables: {
+          input: dataInput
+        },
+        query: `
+          mutation createCategory($input: CreateCategoryInput!) {
+            createCategory(input: $input) {
+              allCategories {
+                edges {
+                  node {
+                    id
+                    name
+                  }
+                }
+              }
+            }
+          }
+        `
+      }, {
+        headers: {
+          'X-CSRFToken': getCSRF(),
+        }
+      })
+      .then((response) => {
+        if (response.data.hasOwnProperty('errors')) {
+          const errorMsg = response.data.errors[0].message
+          if (errorMsg.indexOf("duplicate") >= 0) {
+            inputRef.slug.current.setUniqueError();
+          }
+          return dispatch({
+            type: "POST_FETCH_CATEGORIES_REJECTED",
+            payload: errorMsg,
+          });
+        }
+
+        resetForm();
+        return dispatch({
+          type: "POST_FETCH_CATEGORIES_FULFILLED",
+          payload: response,
+        });
+      });
+    });
   }
 
   return (
@@ -136,7 +190,7 @@ function CategoryForm(props) {
                 <FormInput ref={inputRef.name} name="name" label="Name" validators={['isRequired']} onBlur={onBlurName} />
                 <FormInput ref={inputRef.description} name="description" label="Description" />
                 <FormInput ref={inputRef.slug} name="slug" label="Slug" validators={['isRequired']} />
-                <FormSelect ref={inputRef.parent} name="parent" label="Parent" options={props.categories} />
+                <FormSelect ref={inputRef.parent} name="parent" label="Parent" options={optionCategories} />
                 <button type="submit" className="btn btn-success">Submit</button>
               </form>
             </CardBody>
@@ -151,11 +205,6 @@ const mapStoreToProps = store => ({ categories: store.categories });
 
 function CategoriesPage(props) {
   const { categories } = props.categories;
-  const mappedCategory = categories.map(category => ({
-      key: category.node.id,
-      value: category.node.name
-    })
-  );
 
   useEffect(() => {
     document.title = 'Categories - Admin Page';
@@ -163,7 +212,7 @@ function CategoriesPage(props) {
   }, []);
 
   return (
-    <CategoryForm categories={mappedCategory} />
+    <CategoryForm categories={categories} dispatch={props.dispatch} />
   );
 }
 
