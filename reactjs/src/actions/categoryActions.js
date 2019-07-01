@@ -27,30 +27,3 @@ export function fetchCategories() {
     }),
   }
 }
-
-export function postAndFetchCategories(variables) {
-  return {
-    type: "POST_FETCH_CATEGORIES",
-    payload: axios.post(config.graphqlUrl, {
-      variables: variables,
-      query: `
-        mutation createCategory($input: CreateCategoryInput!) {
-          createCategory(input: $input) {
-            allCategories {
-              edges {
-                node {
-                  id
-                  name
-                }
-              }
-            }
-          }
-        }
-      `
-    }, {
-      headers: {
-        'X-CSRFToken': getCSRF(),
-      }
-    }),
-  }
-}
