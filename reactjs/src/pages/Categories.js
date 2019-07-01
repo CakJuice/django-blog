@@ -88,7 +88,7 @@ function CategoryForm(props) {
         }
       })
       .then((response) => {
-        if (response.data.hasOwnProperty('errors')) {
+        if (response.data.hasOwnProperty('errors') && response.data.errors.length > 0) {
           const errorMsg = response.data.errors[0].message
           if (errorMsg.indexOf("duplicate") >= 0) {
             inputRef.slug.current.setUniqueError();
