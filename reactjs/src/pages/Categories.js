@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import {
-  Card,
-  CardHeader,
-  CardBody } from 'reactstrap';
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardHeader,
+  MDBCardBody } from 'mdbreact';
 import FormInput from '../components/FormInput';
 import FormSelect from '../components/FormSelect';
 import config from '../config';
@@ -109,14 +112,14 @@ function CategoryForm(props) {
   }
 
   return (
-    <div className="container my-3">
-      <div className="row">
-        <div className="col col-lg-4 col-12">
-          <Card>
-            <CardHeader>
+    <MDBContainer className="my-3">
+      <MDBRow>
+        <MDBCol lg="4" size="12">
+          <MDBCard>
+            <MDBCardHeader>
               <h5>New Category</h5>
-            </CardHeader>
-            <CardBody>
+            </MDBCardHeader>
+            <MDBCardBody>
               <form method="POST" onSubmit={submitForm} noValidate>
                 <FormInput ref={inputRef.name} name="name" label="Name" validators={['isRequired']} onBlur={onBlurName} />
                 <FormInput ref={inputRef.description} name="description" label="Description" />
@@ -124,15 +127,15 @@ function CategoryForm(props) {
                 <FormSelect ref={inputRef.parent} name="parent" label="Parent" options={optionCategories} />
                 <button type="submit" className="btn btn-success">Submit</button>
               </form>
-            </CardBody>
-          </Card>
-        </div>
-      </div>
-    </div>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
 }
 
-const mapStoreToProps = store => ({ categories: store.categories });
+const mapStateToProps = state => ({ categories: state.categories });
 
 function CategoriesPage(props) {
   useEffect(() => {
@@ -145,6 +148,6 @@ function CategoriesPage(props) {
   );
 }
 
-const Categories = connect(mapStoreToProps)(CategoriesPage);
+const Categories = connect(mapStateToProps)(CategoriesPage);
 
 export default Categories;

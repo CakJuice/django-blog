@@ -3,7 +3,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
-import './AppRoute.scss';
+import './assets/scss/AppRoute.scss';
 
 class AppRoute extends React.Component {
   componentWillMount() {

@@ -1,26 +1,15 @@
 import React from 'react';
-import { FormGroup } from 'reactstrap';
 import BaseInput from './BaseInput';
 
 class FormSelect extends BaseInput {
   constructor(props) {
     super(props);
 
-    // this.state = {
-    //   options: props.options,
-    // };
-
     this.newProps = Object.assign({}, props);
     delete this.newProps['options'];
 
     this.changeValue = this.changeValue.bind(this);
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({
-  //     options: nextProps.options
-  //   });
-  // }
 
   changeValue(e) {
     this.resetValid();
@@ -36,13 +25,13 @@ class FormSelect extends BaseInput {
     listOptions.unshift(<option key={0} defaultValue value></option>);
 
     return (
-      <FormGroup>
+      <div className="form-group">
         <label htmlFor={this.props.name}>{this.props.label}</label>
         <select className={this.getClassName()} {...this.newProps} onChange={this.changeValue}>
           {listOptions}
         </select>
         {this.state.isValid === false && <div className="invalid-feedback">{this.state.errorMessage}</div>}
-      </FormGroup>
+      </div>
     );
   }
 }

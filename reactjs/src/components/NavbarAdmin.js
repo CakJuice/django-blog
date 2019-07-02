@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink } from 'reactstrap';
+  MDBContainer,
+  MDBCollapse,
+  MDBNavbar,
+  MDBNavbarToggler,
+  MDBNavbarBrand,
+  MDBNavbarNav,
+  MDBNavItem,
+  MDBNavLink } from 'mdbreact';
 
 class NavbarAdmin extends React.Component {
   constructor(props) {
@@ -26,22 +27,22 @@ class NavbarAdmin extends React.Component {
 
   render() {
     return (
-      <Navbar color="light" light expand="md">
-        <div className="container">
-          <NavbarBrand href="/">Homepage</NavbarBrand>
-          <NavbarToggler onClick={this.toggleState} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink tag={Link} to="/admin/">Dashboard</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/admin/categories/">Categories</NavLink>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </div>
-      </Navbar>
+      <MDBNavbar color="indigo" dark expand="md">
+        <MDBContainer>
+          <MDBNavbarBrand href="/">Homepage</MDBNavbarBrand>
+          <MDBNavbarToggler onClick={this.toggleState} />
+          <MDBCollapse isOpen={this.state.isOpen} navbar>
+            <MDBNavbarNav right>
+              <MDBNavItem>
+                <MDBNavLink tag={Link} to="/admin/">Dashboard</MDBNavLink>
+              </MDBNavItem>
+              <MDBNavItem>
+                <MDBNavLink tag={Link} to="/admin/categories/">Categories</MDBNavLink>
+              </MDBNavItem>
+            </MDBNavbarNav>
+          </MDBCollapse>
+        </MDBContainer>
+      </MDBNavbar>
     );
   }
 }
