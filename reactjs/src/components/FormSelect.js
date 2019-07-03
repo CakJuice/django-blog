@@ -27,7 +27,8 @@ class FormSelect extends BaseInput {
     return (
       <div className="form-group">
         <label htmlFor={this.props.name}>{this.props.label}</label>
-        <select className={this.getClassName()} {...this.newProps} onChange={this.changeValue}>
+        <select className={this.getClassName()} {...this.newProps} onChange={this.changeValue}
+                disabled={this.state.disabled}>
           {listOptions}
         </select>
         {this.state.isValid === false && <div className="invalid-feedback">{this.state.errorMessage}</div>}

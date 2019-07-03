@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, createRef } from 'react';
 import { connect } from 'react-redux';
 import {
   MDBContainer,
@@ -15,63 +15,49 @@ import config from '../config';
 import { getCSRF } from '../tools/helpers';
 import axios from 'axios';
 import { fetchCategories } from '../actions/categoryActions';
+import BaseForm from '../components/BaseForm';
 
-function CategoryForm(props) {
-  const { categories } = props.categories
-  const optionCategories = categories.map(category => ({
-      key: category.node.id,
-      value: category.node.name
-    })
-  );
+class CategoryForm extends BaseForm {
+  constructor(props) {
+    super(props);
+    this.inputRef = {
+      name: createRef(),
+      description: createRef(),
+      slug: createRef(),
+      parent: createRef(),
+    };
 
-  const inputRef = {
-    name: useRef(null),
-    description: useRef(null),
-    slug: useRef(null),
-    parent: useRef(null),
+    this.submitForm = this.submitForm.bind(this);
+    this.onBlurName = this.onBlurName.bind(this);
   }
 
-  function onBlurName(e) {
-    if (inputRef.slug.current.state.value === "") {
-      inputRef.slug.current.setState({
-        value: inputRef.name.current.state.value.slugify()
+  onBlurName(e) {
+    if (this.inputRef.slug.current.state.value === "") {
+      this.inputRef.slug.current.setState({
+        value: this.inputRef.name.current.state.value.slugify()
       });
     }
   }
 
-  function resetForm() {
-    for (const key in inputRef) {
-      const elem = inputRef[key].current;
-      elem.resetState();
-    }
-  }
-
-  function submitForm(e) {
+  submitForm(e) {
     e.preventDefault();
 
-    let allValid = true;
-    let dataInput = {};
+    if (this.disabled) return;
 
-    for (const key in inputRef) {
-      const elem = inputRef[key].current;
-      const valid = elem.checkValidation();
-      if (valid) {
-        if (elem.state.value == null || elem.state.value === "") {
-          continue;
-        }
-        dataInput[key] = elem.state.value;
-      } else {
-        allValid = false
-      };
+    this.disableForm();
+
+    const validation = this.checkInputValidation();
+    if (!validation.valid) {
+      this.enableForm();
+      return;
     }
 
-    if (!allValid) return;
-
-    props.dispatch((dispatch) => {
+    const self = this;
+    this.props.dispatch((dispatch) => {
       dispatch({ type: "POST_FETCH_CATEGORIES_PENDING" });
       axios.post(config.graphqlUrl, {
         variables: {
-          input: dataInput
+          input: validation.dataInput
         },
         query: `
           mutation createCategory($input: CreateCategoryInput!) {
@@ -98,15 +84,16 @@ function CategoryForm(props) {
         if (response.data.hasOwnProperty('errors') && response.data.errors.length > 0) {
           const errorMsg = response.data.errors[0].message
           if (errorMsg.indexOf("duplicate") >= 0) {
-            inputRef.slug.current.setUniqueError();
+            self.inputRef.slug.current.setUniqueError();
           }
+          this.enableForm();
           return dispatch({
             type: "POST_FETCH_CATEGORIES_REJECTED",
             payload: errorMsg,
           });
         }
 
-        resetForm();
+        self.resetForm();
         return dispatch({
           type: "POST_FETCH_CATEGORIES_FULFILLED",
           payload: response,
@@ -115,22 +102,31 @@ function CategoryForm(props) {
     });
   }
 
-  return (
-    <MDBCard>
-      <MDBCardHeader>
-        <h5>New Category</h5>
-      </MDBCardHeader>
-      <MDBCardBody>
-        <form method="POST" onSubmit={submitForm} noValidate>
-          <FormInput ref={inputRef.name} name="name" label="Name" validators={['isRequired']} onBlur={onBlurName} />
-          <FormInput ref={inputRef.description} name="description" label="Description" />
-          <FormInput ref={inputRef.slug} name="slug" label="Slug" validators={['isRequired']} />
-          <FormSelect ref={inputRef.parent} name="parent" label="Parent" options={optionCategories} />
-          <MDBBtn type="submit" color="primary">Submit</MDBBtn>
-        </form>
-      </MDBCardBody>
-    </MDBCard>
-  );
+  render() {
+    const { categories } = this.props.categories
+    const optionCategories = categories.map(category => ({
+        key: category.node.id,
+        value: category.node.name
+      })
+    );
+
+    return (
+      <MDBCard>
+        <MDBCardHeader>
+          <h5>New Category</h5>
+        </MDBCardHeader>
+        <MDBCardBody>
+          <form method="POST" onSubmit={this.submitForm} noValidate>
+            <FormInput ref={this.inputRef.name} name="name" label="Name" validators={['isRequired']} onBlur={this.onBlurName} />
+            <FormInput ref={this.inputRef.description} name="description" label="Description" />
+            <FormInput ref={this.inputRef.slug} name="slug" label="Slug" validators={['isRequired']} />
+            <FormSelect ref={this.inputRef.parent} name="parent" label="Parent" options={optionCategories} />
+            <MDBBtn type="submit" color="primary">Submit</MDBBtn>
+          </form>
+        </MDBCardBody>
+      </MDBCard>
+    );
+  }
 }
 
 function CategoryList(props) {
@@ -158,12 +154,20 @@ function CategoryList(props) {
         label: "Slug",
         field: "slug",
         sort: "asc"
-      }
+      },
     ],
     rows: rowCategories,
-  }
+  };
+
   return (
-    <MDBDataTable striped bordered hover data={data} />
+    <MDBCard>
+      <MDBCardHeader>
+        <h5>Categories</h5>
+      </MDBCardHeader>
+      <MDBCardBody>
+        <MDBDataTable striped bordered hover data={data} />
+      </MDBCardBody>
+    </MDBCard>
   );
 }
 

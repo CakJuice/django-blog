@@ -28,7 +28,8 @@ class FormInput extends BaseInput {
     return (
       <div className="form-group">
         <label htmlFor={this.props.name}>{this.props.label}</label>
-        <input className={this.getClassName()} {...this.props} onChange={this.changeValue} value={this.state.value} />
+        <input className={this.getClassName()} {...this.props} onChange={this.changeValue} value={this.state.value}
+               disabled={this.state.disabled} />
         {this.state.isValid === false && <div className="invalid-feedback">{this.state.errorMessage}</div>}
       </div>
     );

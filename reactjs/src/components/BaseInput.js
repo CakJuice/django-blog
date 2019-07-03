@@ -10,6 +10,7 @@ class BaseInput extends React.Component {
       isValid: null,
       value: '',
       errorMessage: '',
+      disabled: false,
     }
 
     this.setValue = this.setValue.bind(this);
@@ -65,6 +66,18 @@ class BaseInput extends React.Component {
     this.setState({
       isValid: true,
       errorMessage: '',
+    });
+  }
+
+  setDisabled() {
+    this.setState({
+      disabled: true
+    });
+  }
+
+  setEnabled() {
+    this.setState({
+      disabled: false
     });
   }
 
