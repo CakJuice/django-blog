@@ -14,6 +14,7 @@ export function fetchCategories() {
               node {
                 id
                 name
+                description
                 slug
               }
             }

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './assets/css/index.css';
 import 'mdbreact/dist/css/mdb.css';
-import "./assets/scss/mdb.scss"
+import "./assets/scss/mdb.scss";
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';

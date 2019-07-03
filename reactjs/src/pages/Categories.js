@@ -6,7 +6,9 @@ import {
   MDBCol,
   MDBCard,
   MDBCardHeader,
-  MDBCardBody } from 'mdbreact';
+  MDBCardBody,
+  MDBBtn,
+  MDBDataTable } from 'mdbreact';
 import FormInput from '../components/FormInput';
 import FormSelect from '../components/FormSelect';
 import config from '../config';
@@ -79,6 +81,8 @@ function CategoryForm(props) {
                   node {
                     id
                     name
+                    description
+                    slug
                   }
                 }
               }
@@ -112,26 +116,54 @@ function CategoryForm(props) {
   }
 
   return (
-    <MDBContainer className="my-3">
-      <MDBRow>
-        <MDBCol lg="4" size="12">
-          <MDBCard>
-            <MDBCardHeader>
-              <h5>New Category</h5>
-            </MDBCardHeader>
-            <MDBCardBody>
-              <form method="POST" onSubmit={submitForm} noValidate>
-                <FormInput ref={inputRef.name} name="name" label="Name" validators={['isRequired']} onBlur={onBlurName} />
-                <FormInput ref={inputRef.description} name="description" label="Description" />
-                <FormInput ref={inputRef.slug} name="slug" label="Slug" validators={['isRequired']} />
-                <FormSelect ref={inputRef.parent} name="parent" label="Parent" options={optionCategories} />
-                <button type="submit" className="btn btn-success">Submit</button>
-              </form>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+    <MDBCard>
+      <MDBCardHeader>
+        <h5>New Category</h5>
+      </MDBCardHeader>
+      <MDBCardBody>
+        <form method="POST" onSubmit={submitForm} noValidate>
+          <FormInput ref={inputRef.name} name="name" label="Name" validators={['isRequired']} onBlur={onBlurName} />
+          <FormInput ref={inputRef.description} name="description" label="Description" />
+          <FormInput ref={inputRef.slug} name="slug" label="Slug" validators={['isRequired']} />
+          <FormSelect ref={inputRef.parent} name="parent" label="Parent" options={optionCategories} />
+          <MDBBtn type="submit" color="primary">Submit</MDBBtn>
+        </form>
+      </MDBCardBody>
+    </MDBCard>
+  );
+}
+
+function CategoryList(props) {
+  const { categories } = props.categories
+  const rowCategories = categories.map(category => ({
+      name: category.node.name,
+      description: category.node.description,
+      slug: category.node.slug,
+    })
+  );
+
+  const data = {
+    columns: [
+      {
+        label: "Name",
+        field: "name",
+        sort: "asc",
+      },
+      {
+        label: "Description",
+        field: "description",
+        sort: "asc"
+      },
+      {
+        label: "Slug",
+        field: "slug",
+        sort: "asc"
+      }
+    ],
+    rows: rowCategories,
+  }
+  return (
+    <MDBDataTable striped bordered hover data={data} />
   );
 }
 
@@ -144,7 +176,16 @@ function CategoriesPage(props) {
   }, []);
 
   return (
-    <CategoryForm categories={props.categories} dispatch={props.dispatch} />
+    <MDBContainer className="my-3">
+      <MDBRow>
+        <MDBCol lg="4" size="12">
+          <CategoryForm categories={props.categories} dispatch={props.dispatch} />
+        </MDBCol>
+        <MDBCol lg="8" size="12">
+          <CategoryList categories={props.categories} />
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
 }
 
