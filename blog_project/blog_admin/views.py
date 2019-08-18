@@ -13,6 +13,11 @@ from . import forms
 
 
 # Create your views here.
+@login_required
+def react_view(request):
+    return render(request, 'build/index.html')
+
+
 def index(request):
     return redirect('admin_dashboard')
 
