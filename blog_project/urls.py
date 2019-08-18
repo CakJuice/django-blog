@@ -13,21 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
 # from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
-# from django.views.decorators.csrf import csrf_exempt
-from graphene_django.views import GraphQLView
+from django.conf import settings
 
 from blog_project.base import views as base_views
-from blog_project.file_media import views as media_views
 from blog_project.post import views as post_views
+from blog_project.file_media import views as media_views
 
 urlpatterns = [
     path('', base_views.homepage, name='homepage'),
-
-    path('graphql', GraphQLView.as_view(graphiql=True)),
 
     path('login/', auth_views.LoginView.as_view(template_name='base/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
@@ -65,7 +61,6 @@ urlpatterns = [
 if settings.DEBUG:
     import debug_toolbar
     from django.conf.urls.static import static
-
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
