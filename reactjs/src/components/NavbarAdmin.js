@@ -17,6 +17,7 @@ class NavbarAdmin extends React.Component {
       isOpen: false,
     };
     this.toggleState = this.toggleState.bind(this);
+    this.clickHomepage = this.clickHomepage.bind(this);
   }
 
   toggleState(e) {
@@ -25,11 +26,15 @@ class NavbarAdmin extends React.Component {
     });
   }
 
+  clickHomepage(e) {
+    window.location.href = '/';
+  }
+
   render() {
     return (
       <MDBNavbar color="indigo" dark expand="md">
         <MDBContainer>
-          <MDBNavbarBrand href="/">Homepage</MDBNavbarBrand>
+          <MDBNavbarBrand href="#" onClick={this.clickHomepage}>Homepage</MDBNavbarBrand>
           <MDBNavbarToggler onClick={this.toggleState} />
           <MDBCollapse isOpen={this.state.isOpen} navbar>
             <MDBNavbarNav right>
