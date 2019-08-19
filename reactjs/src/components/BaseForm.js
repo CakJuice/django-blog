@@ -50,7 +50,7 @@ class BaseForm extends React.Component {
     }
 
     return {
-      valid: allValid,
+      isValid: allValid,
       dataInput: dataInput,
     }
   }

@@ -16,6 +16,11 @@ export function fetchCategories() {
                 name
                 description
                 slug
+                parent {
+                  id
+                  name
+                  slug
+                }
               }
             }
           }

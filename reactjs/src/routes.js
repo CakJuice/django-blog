@@ -15,6 +15,11 @@ const routes = [
     path: '/admin/categories/',
     exact: true,
     component: Categories,
+  },
+  {
+    title: "Edit Category",
+    path: '/admin/category/:id/',
+    component: Categories,
   }
 ];
 

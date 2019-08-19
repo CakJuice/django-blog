@@ -27,8 +27,30 @@ class CategoryForm extends BaseForm {
       parent: createRef(),
     };
 
+    this.state = {
+      id: null,
+    }
+
     this.submitForm = this.submitForm.bind(this);
     this.onBlurName = this.onBlurName.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('--- component did mount ---', this.props.category);
+    if (this.props.category.hasOwnProperty('id')) {
+      this.setState({
+        id: this.props.category.id
+      });
+      this.inputRef.name.current.setState({
+        value: this.props.category.name
+      });
+      this.inputRef.description.current.setState({
+        value: this.props.category.description
+      });
+      this.inputRef.slug.current.setState({
+        value: this.props.category.slug
+      });
+    }
   }
 
   onBlurName(e) {
@@ -44,13 +66,12 @@ class CategoryForm extends BaseForm {
 
     if (this.disabled) return;
 
-    this.disableForm();
-
     const validation = this.checkInputValidation();
-    if (!validation.valid) {
-      this.enableForm();
+    if (!validation.isValid) {
       return;
     }
+    
+    this.disableForm();
 
     const self = this;
     this.props.dispatch((dispatch) => {
@@ -69,6 +90,11 @@ class CategoryForm extends BaseForm {
                     name
                     description
                     slug
+                    parent {
+                      id
+                      name
+                      slug
+                    }
                   }
                 }
               }
@@ -132,6 +158,7 @@ class CategoryForm extends BaseForm {
 function CategoryList(props) {
   const { categories } = props.categories
   const rowCategories = categories.map(category => ({
+      id: category.node.id,
       name: category.node.name,
       description: category.node.description,
       slug: category.node.slug,
@@ -141,9 +168,14 @@ function CategoryList(props) {
   const data = {
     columns: [
       {
+        label: "ID",
+        field: "id",
+        sort: "asc"
+      },
+      {
         label: "Name",
         field: "name",
-        sort: "asc",
+        sort: "asc"
       },
       {
         label: "Description",
@@ -174,6 +206,29 @@ function CategoryList(props) {
 const mapStateToProps = state => ({ categories: state.categories });
 
 function CategoriesPage(props) {
+  const params = props.match.params;
+  let category = {};
+  if (params.hasOwnProperty('id')) {
+    const categoryId = params.id;
+    for (let _category of props.categories.categories) {
+      console.log(categoryId, _category.node.id, categoryId === _category.node.id);
+      if (categoryId === _category.node.id) {
+        category = {
+          id: categoryId,
+          name: _category.node.name,
+          description: _category.node.description,
+          slug: _category.node.slug,
+        }
+        break;
+      }
+    }
+    
+    console.log(category);
+    if (!category.hasOwnProperty('id')) {
+      console.log('redirect to 404');
+    }
+  }
+
   useEffect(() => {
     document.title = 'Categories - Admin Page';
     props.dispatch(fetchCategories());
@@ -183,7 +238,7 @@ function CategoriesPage(props) {
     <MDBContainer className="my-3">
       <MDBRow>
         <MDBCol lg="4" size="12">
-          <CategoryForm categories={props.categories} dispatch={props.dispatch} />
+          <CategoryForm categories={props.categories} dispatch={props.dispatch} category={category} />
         </MDBCol>
         <MDBCol lg="8" size="12">
           <CategoryList categories={props.categories} />
