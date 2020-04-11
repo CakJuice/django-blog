@@ -36,7 +36,7 @@ class CategoryForm extends BaseForm {
   }
 
   componentDidMount() {
-    console.log('--- component did mount ---', this.props.category);
+    // console.log('--- component did mount ---', this.props.category);
     if (this.props.category.hasOwnProperty('id')) {
       this.setState({
         id: this.props.category.id
@@ -167,11 +167,11 @@ function CategoryList(props) {
 
   const data = {
     columns: [
-      {
-        label: "ID",
-        field: "id",
-        sort: "asc"
-      },
+      // {
+      //   label: "ID",
+      //   field: "id",
+      //   sort: "asc"
+      // },
       {
         label: "Name",
         field: "name",
@@ -211,7 +211,7 @@ function CategoriesPage(props) {
   if (params.hasOwnProperty('id')) {
     const categoryId = params.id;
     for (let _category of props.categories.categories) {
-      console.log(categoryId, _category.node.id, categoryId === _category.node.id);
+      // console.log(categoryId, _category.node.id, categoryId === _category.node.id);
       if (categoryId === _category.node.id) {
         category = {
           id: categoryId,
@@ -223,10 +223,10 @@ function CategoriesPage(props) {
       }
     }
     
-    console.log(category);
-    if (!category.hasOwnProperty('id')) {
-      console.log('redirect to 404');
-    }
+    // console.log(category);
+    // if (!category.hasOwnProperty('id')) {
+    //   console.log('redirect to 404');
+    // }
   }
 
   useEffect(() => {
