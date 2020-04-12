@@ -15,6 +15,7 @@ urlpatterns = [
     path('category/<int:pk>/update/', views.category_update, name='admin_category_update'),
     path('category/<int:pk>/delete/', views.category_delete, name='admin_category_delete'),
 
+    path('posts/', views.post_index, name='admin_post_index'),
     path('post/create/', views.post_create, name='admin_post_create'),
     path('post/<int:pk>/update/', views.post_update, name='admin_post_update'),
 

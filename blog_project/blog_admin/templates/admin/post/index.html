@@ -1,0 +1,86 @@
+{% extends 'layouts/admin_layout.html' %}
+{% load i18n %}
+
+{% block extra_meta %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+{% block title %}{% trans "Posts" %}{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+{% endblock %}
+
+{% block content %}
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">{% trans "Posts" %}</h1>
+    <a href="{% url 'admin_post_create' %}" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
+      <i class="fas fa-plus-square text-white-50"></i> {% trans "New Post" %}
+    </a>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="tablePosts" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>{% trans "Title" %}</th>
+              <th>{% trans "Body Preview" %}</th>
+              <th>{% trans "Description" %}</th>
+              <th>{% trans "State" %}</th>
+              <th>{% trans "Language" %}</th>
+              <th>{% trans "Publish Date" %}</th>
+              <th>{% trans "Action" %}</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>{% trans "Title" %}</th>
+              <th>{% trans "Body Preview" %}</th>
+              <th>{% trans "Description" %}</th>
+              <th>{% trans "State" %}</th>
+              <th>{% trans "Language" %}</th>
+              <th>{% trans "Publish Date" %}</th>
+              <th>{% trans "Action" %}</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for post in posts %}
+              <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.body_preview }}</td>
+                <td>{{ post.description }}</td>
+                <td>{{ post.state }}</td>
+                <td>{{ post.language }}</td>
+                <td>{{ post.publish_date }}</td>
+                <td>
+                  <a href="{% url 'admin_post_update' pk=post.id %}">Edit</a>
+                  |
+                  <a href="#" class="delete-post" data-toggle="modal"
+                     data-target="#deletePostModal">Delete</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_body %}
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#tablePosts').DataTable({
+        columns: [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          { orderable: false, searchable: false },
+        ],
+      });
+    });
+  </script>
+{% endblock %}

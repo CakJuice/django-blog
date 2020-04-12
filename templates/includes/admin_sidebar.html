@@ -27,7 +27,7 @@
     </a>
     <div id="collapsePost" class="collapse" aria-labelledby="headingPosts" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="#">{% trans "All Posts" %}</a>
+        <a class="collapse-item" href="{% url 'admin_post_index' %}">{% trans "All Posts" %}</a>
         <a class="collapse-item" href="{% url 'admin_post_create' %}">{% trans "New Post" %}</a>
         <a class="collapse-item" href="{% url 'admin_category_index' %}">{% trans "Categories" %}</a>
         <a class="collapse-item" href="#">{% trans "Tags" %}</a>

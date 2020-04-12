@@ -103,6 +103,22 @@ def category_delete(request, pk):
 
 
 @login_required
+def post_index(request):
+    post_list = Post.objects.all()
+    paginator = Paginator(post_list, 10)
+    page = request.GET.get('page', '1')
+    posts = paginator.get_page(page)
+    num_pages = posts.paginator.num_pages
+    pagination = range_pagination(int(page), num_pages, limit=10)
+
+    context = {
+        'posts': posts,
+        'pagination': pagination,
+    }
+    return render(request, 'admin/post/index.html', context=context)
+
+
+@login_required
 def post_create(request):
     if request.method == 'POST':
         form = forms.PostForm(request.POST)

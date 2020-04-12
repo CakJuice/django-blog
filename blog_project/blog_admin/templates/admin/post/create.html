@@ -10,9 +10,9 @@
 
 {% block content %}
   {% if form.instance.pk %}
-    <h1>{% trans "Update Post" %}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{% trans "Update Post" %}</h1>
   {% else %}
-    <h1>{% trans "Add New Post" %}</h1>
+    <h1 class="h3 mb-0 text-gray-800">{% trans "Add New Post" %}</h1>
   {% endif %}
   {% include 'admin/post/_form.html' %}
 {% endblock %}
